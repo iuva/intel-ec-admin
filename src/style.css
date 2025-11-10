@@ -1,0 +1,165 @@
+/* 全局CSS变量定义 */
+:root {
+  /* 默认浅色主题变量 */
+  --primaryColor: #1890ff;
+  --successColor: #52c41a;
+  --warningColor: #faad14;
+  --errorColor: #f5222d;
+  --infoColor: #1890ff;
+  
+  --backgroundColor: #f5f5f5;
+  --componentBackgroundColor: #ffffff;
+  
+  --textColor: #333333;
+  --textSecondaryColor: #666666;
+  --textDisabledColor: #999999;
+  
+  --borderColor: #d9d9d9;
+  --dividerColor: #f0f0f0;
+  
+  --boxShadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  
+  --hoverColor: #f0f0f0;
+  --activeColor: #e6f7ff;
+}
+
+/* 深色主题CSS变量覆盖 */
+.dark-theme {
+  --backgroundColor: #141414;
+  --componentBackgroundColor: #1f1f1f;
+  --textColor: #e0e0e0;
+  --textSecondaryColor: #a0a0a0;
+  --textDisabledColor: #666666;
+  --borderColor: #3f3f3f;
+  --dividerColor: #2c2c2c;
+  --boxShadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  --hoverColor: #2c2c2c;
+  --activeColor: #1a3f5f;
+  --errorColor: #ff4d4f;
+}
+
+/* 全局样式重置 */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body {
+  height: 100%;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  color: var(--textColor);
+  background-color: var(--backgroundColor);
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* 滚动条样式 */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--hoverColor);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--borderColor);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--textSecondaryColor);
+}
+
+/* 确保布局组件占满高度 */
+.ant-layout {
+  min-height: 100vh;
+  background-color: var(--backgroundColor);
+  transition: background-color 0.3s ease;
+}
+
+/* 修复Ant Design的一些默认样式 */
+.ant-menu-inline .ant-menu-item::after {
+  border-right: 3px solid var(--primaryColor);
+}
+
+.ant-btn-primary {
+  background-color: var(--primaryColor);
+  border-color: var(--primaryColor);
+}
+
+.ant-btn-primary:hover {
+  background-color: #40a9ff;
+  border-color: #40a9ff;
+}
+
+/* 通用主题响应式样式 */
+.ant-card,
+.ant-table,
+.ant-form,
+.ant-modal-content,
+.ant-drawer-content {
+  background-color: var(--componentBackgroundColor);
+  color: var(--textColor);
+  border-color: var(--borderColor);
+  box-shadow: var(--boxShadow);
+  transition: all 0.3s ease;
+}
+
+.ant-input,
+.ant-select-selector,
+.ant-pagination-item,
+.ant-pagination-prev .ant-pagination-item-link,
+.ant-pagination-next .ant-pagination-item-link {
+  background-color: var(--componentBackgroundColor);
+  color: var(--textColor);
+  border-color: var(--borderColor);
+  transition: all 0.3s ease;
+}
+
+.ant-input:hover,
+.ant-select-selector:hover,
+.ant-pagination-item:hover,
+.ant-pagination-prev .ant-pagination-item-link:hover,
+.ant-pagination-next .ant-pagination-item-link:hover {
+  border-color: var(--primaryColor);
+}
+
+.ant-menu {
+  background-color: var(--componentBackgroundColor);
+  border-color: var(--borderColor);
+  transition: all 0.3s ease;
+}
+
+.ant-menu-item,
+.ant-menu-submenu-title {
+  color: var(--textColor);
+  transition: all 0.3s ease;
+}
+
+.ant-menu-item:hover,
+.ant-menu-submenu-title:hover {
+  color: var(--primaryColor);
+  background-color: var(--hoverColor);
+}
+
+.ant-menu-item-selected {
+  color: var(--primaryColor);
+  background-color: var(--activeColor);
+}
+
+/* 确保ID选择器不与其他样式冲突 */
+#app {
+  height: 100vh;
+  overflow: hidden;
+}
+
+/* 平滑过渡动画 */
+* {
+  transition-property: background-color, border-color, color, fill, stroke, opacity, box-shadow, transform;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 300ms;
+}
