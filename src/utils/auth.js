@@ -20,7 +20,7 @@ export const setRefreshToken = (token) => {
 
 // 清除所有token
 export const removeToken = () => {
-  // localStorage.removeItem('access_token')
+  localStorage.removeItem('access_token')
   localStorage.removeItem('refresh_token')
 }
 

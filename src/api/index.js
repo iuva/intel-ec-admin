@@ -10,14 +10,13 @@ export const login = (data) => {
 }
 
 // 刷新token接口
-export const refreshToken = (refreshToken) => {
+export const refreshToken = (refreshToken,token) => {
   return request({
     url: '/api/v1/auth/refresh',
     method: 'post',
+    headers: { Authorization: 'Bearer ' + token },
     data: {
-      refresh_data: {
-        refresh_token: refreshToken
-      }
+      refresh_token: refreshToken
     }
   })
 }

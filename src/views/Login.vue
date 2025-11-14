@@ -1,54 +1,43 @@
 <template>
-  <div class="login-container">
-    <div class="login-form-wrapper">
-      <h2 class="login-title">后台管理系统</h2>
-      <a-form
-        :model="formState"
-        name="login"
-        :rules="rules"
-        ref="formRef"
-        class="login-form"
-      >
-        <a-form-item label="账号" name="username">
-          <a-input
-            v-model:value="formState.username"
-            placeholder="请输入账号"
-            prefix-icon="<user-outlined />"
-          />
-        </a-form-item>
+  <a-row>
+    <a-col :xs="0" :sm="0" :md="0" :lg="13" :xl="13" style="background-color: skyblue;">
+      <div class="platform-name">
+        <span>{{ appName }}</span>
+      </div>
+    </a-col>
+    <a-col :xs="24" :sm="24" :md="24" :lg="11" :xl="11">
+      <div class="login-container">
+        <div class="login-form-wrapper">
+          <h2 class="login-title">账号密码登录</h2>
+          <a-form :model="formState" name="login" :rules="rules" ref="formRef" class="login-form">
+            <a-form-item name="username">
+              <a-input v-model:value="formState.username" placeholder="请输入登录账号" prefix-icon="<user-outlined />"/>
+            </a-form-item>
 
-        <a-form-item label="密码" name="password">
-          <a-input-password
-            v-model:value="formState.password"
-            placeholder="请输入密码"
-            prefix-icon="<lock-outlined />"
-            visibilityToggle
-          />
-        </a-form-item>
+            <a-form-item name="password">
+              <a-input-password v-model:value="formState.password" placeholder="请输入密码" prefix-icon="<lock-outlined />"
+                                visibilityToggle/>
+            </a-form-item>
 
-        <a-form-item>
-          <a-button
-            type="primary"
-            html-type="submit"
-            class="login-button"
-            :loading="loading"
-            @click="handleSubmit"
-          >
-            登录
-          </a-button>
-        </a-form-item>
-      </a-form>
-    </div>
-  </div>
+            <a-form-item>
+              <a-button type="primary" html-type="submit" class="login-button" :loading="loading" @click="handleSubmit">
+                登录
+              </a-button>
+            </a-form-item>
+          </a-form>
+        </div>
+      </div>
+    </a-col>
+  </a-row>
 </template>
 
 <script>
-import { ref, reactive } from 'vue'
-import { useRouter } from 'vue-router'
-import { message } from 'ant-design-vue'
-import { UserOutlined, LockOutlined } from '@ant-design/icons-vue'
-import { login, refreshToken } from '../api/index'
-import { setToken, setRefreshToken, getRefreshToken } from '../utils/auth'
+import {ref, reactive} from 'vue'
+import {useRouter} from 'vue-router'
+import {message as antdMessage} from 'ant-design-vue'
+import {UserOutlined, LockOutlined} from '@ant-design/icons-vue'
+import {login, refreshToken} from '../api/index'
+import {setToken, setRefreshToken, getRefreshToken} from '../utils/auth'
 
 export default {
   name: 'Login',
@@ -60,6 +49,8 @@ export default {
     const router = useRouter()
     const formRef = ref()
     const loading = ref(false)
+    const appName = ref('')
+    appName.value = import.meta.env.VITE_APP_NAME
     const formState = reactive({
       username: '',
       password: ''
@@ -67,10 +58,10 @@ export default {
 
     const rules = {
       username: [
-        { required: true, message: '请输入账号', trigger: 'blur' }
+        {required: true, message: '请输入账号', trigger: 'blur'}
       ],
       password: [
-        { required: true, message: '请输入密码', trigger: 'blur' }
+        {required: true, message: '请输入密码', trigger: 'blur'}
       ]
     }
 
@@ -81,15 +72,16 @@ export default {
 
         // 由于是模拟环境，我们直接模拟登录成功
         // 实际项目中应该调用真实的登录接口
-        const { data } = await login(formState)
-        
+        const {data, message} = await login(formState)
+        console.log('登录成功:', data, message)
+
         // const rt = getRefreshToken()
         // refreshToken(rt)
 
         setToken(data.token)
         setRefreshToken(data.refresh_token)
-        
-        message.success('登录成功')
+
+        antdMessage.success(message)
         router.push('/')
       } catch (error) {
         console.error('登录失败:', error)
@@ -104,7 +96,8 @@ export default {
       loading,
       formState,
       rules,
-      handleSubmit
+      handleSubmit,
+      appName
     }
   }
 }
@@ -116,23 +109,28 @@ export default {
   justify-content: center;
   align-items: center;
   height: 100vh;
-  background: linear-gradient(135deg, var(--primaryColor) 0%, #764ba2 100%);
-  transition: background 0.3s ease;
+  width: 100%;
+  background: white;
 }
 
 .login-form-wrapper {
-  background: white;
   padding: 40px;
-  border-radius: 8px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
   width: 400px;
-  max-width: 90%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
   transition: all 0.3s ease;
+
+}
+
+:deep(.login-form-wrapper .ant-form) {
+  box-shadow: none
 }
 
 .login-title {
   text-align: center;
-  margin-bottom: 30px;
+  margin-bottom: 40px;
   color: var(--primaryColor);
   font-size: 24px;
   transition: color 0.3s ease;
@@ -157,5 +155,18 @@ body.dark-theme .login-form-wrapper {
 
 body.dark-theme .login-title {
   color: var(--primaryColor);
+}
+
+.platform-name {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.platform-name span {
+  color: white;
+  font-size: 40px;
 }
 </style>

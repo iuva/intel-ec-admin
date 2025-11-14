@@ -1,115 +1,149 @@
 <template>
-  <a-layout class="layout" :class="{ 'dark-layout': isDark }">
-    <!-- 头部 -->
-    <a-layout-header class="header">
-      <div class="logo">后台管理系统</div>
-      <div class="header-actions">
-
-        <!-- 退出登录 -->
-        <a-button 
-          type="text" 
-          @click="handleLogout"
-          :style="{ color: isDark ? '#e0e0e0' : '#333333' }"
-        >
-          退出登录
-        </a-button>
-      </div>
-    </a-layout-header>
-    
-    <a-layout>
-      <!-- 左侧菜单栏 -->
-      <a-layout-sider 
-        width="256" 
-        :theme="isDark ? 'dark' : 'light'" 
-        v-model:collapsed="collapsed"
-        class="sidebar"
-      >
-        <a-menu
-          mode="inline"
-          :selected-keys="[selectedKey]"
-          :default-open-keys="['sub1']"
-          class="menu-sidebar"
-          :style="{
-            backgroundColor: isDark ? '#1f1f1f' : '#ffffff',
-            borderRightColor: isDark ? '#3f3f3f' : '#e8e8e8'
-          }"
-        >
-          <a-sub-menu key="sub1">
-            <template #title>
-              <span>
-                <user-outlined />
-                <span>测试管理</span>
-              </span>
+  <a-spin :spinning="loading">
+    <a-layout class="layout" :class="{ 'dark-layout': isDark }">
+      <!-- 头部 -->
+      <a-layout-header class="header">
+        <div class="logo">
+          <AuditOutlined/>
+          <span class="text">{{ appName }}</span>
+          <a-button type="link" @click="toggleCollapsed" style="font-size: 16px;color: black">
+            <template #icon>
+              <MenuUnfoldOutlined v-if="collapsed"/>
+              <MenuFoldOutlined v-else/>
             </template>
-            <a-menu-item key="/list" @click="navigate('/list')">
-              <span>列表页面</span>
+          </a-button>
+        </div>
+
+        <div class="header-actions">
+          <a-button type="text" @click="handleLogout" :style="{ color: isDark ? '#e0e0e0' : '#333333' }">
+            退出登录
+          </a-button>
+        </div>
+      </a-layout-header>
+
+      <a-layout>
+        <a-layout-sider width="256" v-model:collapsed="collapsed" class="sidebar">
+          <a-menu mode="inline" :selected-keys="[currentKey,selectedKey]" :default-open-keys="['enabled']"
+                  class="menu-sidebar">
+            <a-menu-item key="/enabled" popupClassName="custom-sub-menu" @click="navigate('/enabled')">
+              <span>
+                <ContainerOutlined/>
+                <span>可用HOST管理</span>
+              </span>
             </a-menu-item>
-          </a-sub-menu>
-        </a-menu>
-      </a-layout-sider>
-      
-      <!-- 右侧内容区 -->
-      <a-layout-content class="content">
-        <router-view v-slot="{ Component }">
-          <transition name="fade" mode="out-in">
-            <component :is="Component" />
-          </transition>
-        </router-view>
-      </a-layout-content>
+            <a-menu-item key="/pending" popupClassName="custom-sub-menu" @click="navigate('/pending')">
+              <span>
+                <AuditOutlined/>
+                <span>待审批HOST</span>
+              </span>
+            </a-menu-item>
+            <a-menu-item key="/ota" popupClassName="custom-sub-menu" @click="navigate('/ota')">
+            <span>
+              <CloudUploadOutlined/>
+              <span>OTA管理</span>
+            </span>
+            </a-menu-item>
+          </a-menu>
+        </a-layout-sider>
+        <a-layout-content class="content">
+          <router-view v-slot="{ Component,route}">
+            <transition name="fade" mode="out-in">
+              <component
+                  :is="Component"
+                  :key="route.fullPath"
+                  v-if="!route.meta.keepAlive"
+              />
+            </transition>
+
+            <keep-alive>
+              <component
+                  :is="Component"
+                  :key="route.fullPath"
+                  v-if="route.meta.keepAlive"
+              />
+            </keep-alive>
+          </router-view>
+        </a-layout-content>
+      </a-layout>
     </a-layout>
-  </a-layout>
+  </a-spin>
 </template>
 
 <script>
-import { ref, computed, onMounted, watch } from 'vue'
-import { useRouter } from 'vue-router'
-import { UserOutlined } from '@ant-design/icons-vue'
-import { login, refreshToken } from '../api/index'
-import { removeToken, getRefreshToken } from '../utils/auth'
-import { isDarkTheme, saveTheme, getCurrentTheme } from '../theme/index'
+import {ref, computed, onMounted, watch, createVNode} from 'vue'
+import {Modal} from 'ant-design-vue'
+import {storeToRefs} from 'pinia'
+import {useRouter, useRoute} from 'vue-router'
+import {
+  AuditOutlined,
+  MenuUnfoldOutlined,
+  ContainerOutlined,
+  MenuFoldOutlined,
+  CloudUploadOutlined,
+  ExclamationCircleOutlined
+} from '@ant-design/icons-vue'
+import {removeToken} from '../utils/auth'
+import {isDarkTheme, saveTheme, getCurrentTheme} from '../theme/index'
+
+import {useAppStore} from '../store/app-store'
 
 export default {
   name: 'Layout',
   components: {
-    UserOutlined
+    AuditOutlined,
+    CloudUploadOutlined,
+    MenuUnfoldOutlined,
+    MenuFoldOutlined,
+    ContainerOutlined
   },
   setup() {
     const router = useRouter()
+    const route = useRoute()
     const collapsed = ref(false)
     const isDark = ref(false)
-    
+    const appName = ref('')
+    const currentKey = ref('')
+    const appStore = useAppStore()
+    appName.value = import.meta.env.VITE_APP_NAME
+
+    const {loading} = storeToRefs(appStore)
+
     // 计算当前选中的菜单项
     const selectedKey = computed(() => {
       const currentPath = router.currentRoute.value.path
       // 当访问详情页时，高亮列表菜单项
-      if (currentPath.includes('/detail/')) {
-        return '/list'
+      // if (currentPath.includes('/detail/')) {
+      //   return '/list'
+      // }
+      if (currentKey.value.length == 0) {
+        currentKey.value = currentPath
       }
-      return currentPath
+      return currentKey.value
     })
-    
+
     // 导航到指定路径
     const navigate = (path) => {
       router.push(path)
+      currentKey.value = path
     }
-    
+
     // 切换主题
     const toggleTheme = (checked) => {
       isDark.value = checked
       saveTheme(checked ? 'dark' : 'light')
       applyTheme()
     }
-    
+
     // 应用主题样式
     const applyTheme = () => {
       const theme = getCurrentTheme()
       const root = document.documentElement
-      
+
       // 设置CSS变量
       Object.keys(theme).forEach(key => {
         root.style.setProperty(`--${key}`, theme[key])
       })
-      
+
       // 添加/移除深色主题类
       if (isDark.value) {
         document.body.classList.add('dark-theme')
@@ -117,36 +151,60 @@ export default {
         document.body.classList.remove('dark-theme')
       }
     }
-    
+
     // 退出登录
     const handleLogout = () => {
 
 
-        const rt = getRefreshToken()
-        refreshToken(rt)
+      // const rt = getRefreshToken()
+      // const token = getToken()
+      // refreshToken(rt,token)
 
-      // removeToken()
-      // router.push('/login')
+      Modal.confirm({
+        title: createVNode('div', {style: 'color:red;font-size:16px;'}, '确认退出登录？'),
+        icon: createVNode(ExclamationCircleOutlined),
+        onOk() {
+          removeToken()
+          router.push('/login')
+        },
+        okText: '确认',
+        cancelText: '取消',
+        class: 'logout-modal',
+      });
     }
-    
+
     // 监听主题变化，实时应用
     watch(isDark, () => {
       applyTheme()
     })
-    
+
+    // 监听主题变化，实时应用
+    watch(loading, () => {
+      console.log('loading', loading.value)
+    })
+
     onMounted(() => {
       // 初始化主题
       isDark.value = isDarkTheme()
       applyTheme()
     })
-    
+
+    const toggleCollapsed = () => {
+      console.log('toggleCollapsed called')
+      collapsed.value = !collapsed.value
+    }
+
     return {
+      route,
       collapsed,
       selectedKey,
       navigate,
       isDark,
       toggleTheme,
-      handleLogout
+      handleLogout,
+      appName,
+      loading,
+      toggleCollapsed
     }
   }
 }
@@ -167,15 +225,22 @@ export default {
   justify-content: space-between;
   align-items: center;
   padding: 0 24px;
-  background: var(--componentBackgroundColor, #ffffff);
+  background: var(--componentBackgroundColor, rgba(255, 255, 255, 0));
   box-shadow: var(--boxShadow, 0 2px 8px rgba(0, 0, 0, 0.1));
   transition: all 0.3s ease;
 }
 
 .logo {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
   font-size: 20px;
   font-weight: bold;
+}
+
+.logo .text {
   color: var(--primaryColor, #1890ff);
+  line-height: 40px;
 }
 
 .header-actions {
@@ -196,11 +261,9 @@ export default {
 
 .content {
   margin: 24px;
-  padding: 24px;
-  background: var(--componentBackgroundColor, #ffffff);
+  margin-top: 0;
   min-height: 280px;
   border-radius: 8px;
-  box-shadow: var(--boxShadow, 0 2px 8px rgba(0, 0, 0, 0.1));
   transition: all 0.3s ease;
 }
 
@@ -212,5 +275,16 @@ export default {
 .fade-enter-from,
 .fade-leave-to {
   opacity: 0;
+}
+
+.ant-layout .ant-layout-sider {
+  background-color: rgba(255, 255, 255, 1);
+  border-radius: 12px;
+  margin-left: 20px;
+  box-shadow: none;
+}
+
+:deep(.ant-menu-inline) {
+  background-color: rgba(255, 255, 255, 0) !important;
 }
 </style>
