@@ -1,3 +1,58 @@
+export const pageRouters = [
+  {
+    path: '',
+    redirect: '/enabled',
+  },
+  {
+    path: 'enabled',
+    title: '可用HOST管理',
+    icon: 'container-outlined',
+    children: [
+      {
+        path: '',
+        title: '可用HOST列表',
+        name: 'EnabledList',
+        meta: {keepAlive: true},
+        component: () => import('../views/enabled/Enabled.vue'),
+      },
+      {
+        path: 'detail/:id?',
+        title: '可用HOST详情',
+        name: 'EnabledDetail',
+        meta: {keepAlive: false},
+        component: () => import('../views/enabled/Detail.vue'),
+      }
+    ]
+  },
+  {
+    path: 'pending',
+    title: '待审批HOST管理',
+    icon: 'audit-outlined',
+    children: [
+      {
+        path: '',
+        title: '待审批HOST列表',
+        name: 'PendingList',
+        meta: {keepAlive: true},
+        component: () => import('../views/pending/Pending.vue'),
+      },
+      {
+        path: 'detail/:id?',
+        title: '待审批HOST详情',
+        name: 'PendingDetail',
+        meta: {keepAlive: false},
+        component: () => import('../views/pending/Detail.vue'),
+      }
+    ]
+  },
+  {
+    path: 'ota',
+    name: 'ota',
+    title: 'OTA管理',
+    icon: 'cloud-upload-outlined',
+    meta: {keepAlive: true},
+    component: () => import('../views/ota/Ota.vue'),
+  },]
 export const routes = [
   {
     path: '/login',
@@ -11,50 +66,7 @@ export const routes = [
     component: () => import('../layout/index.vue'),
     meta: {requiresAuth: true},
     children: [
-      {
-        path: '',
-        redirect: '/enabled',
-      },
-      {
-        path: 'enabled',
-        children: [
-          {
-            path: '',
-            name: 'EnabledList',
-            meta: {keepAlive: true},
-            component: () => import('../views/enabled/Enabled.vue'),
-          },
-          {
-            path: 'detail/:id?',
-            name: 'EnabledDetail',
-            meta: {keepAlive: false},
-            component: () => import('../views/enabled/Detail.vue'),
-          }
-        ]
-      },
-      {
-        path: 'pending',
-        children: [
-          {
-            path: '',
-            name: 'PendingList',
-            meta: {keepAlive: true},
-            component: () => import('../views/pending/Pending.vue'),
-          },
-          {
-            path: 'detail/:id?',
-            name: 'PendingDetail',
-            meta: {keepAlive: false},
-            component: () => import('../views/pending/Detail.vue'),
-          }
-        ]
-      },
-      {
-        path: 'ota',
-        name: 'ota',
-        meta: {keepAlive: true},
-        component: () => import('../views/ota/Ota.vue'),
-      },
+      ...pageRouters,
       {
         path: '/404',
         name: 'NotFount',

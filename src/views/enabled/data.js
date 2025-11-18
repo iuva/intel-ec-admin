@@ -9,6 +9,13 @@ export const HostStatusMap = new Map([
   [7, '手动停用'],
   [8, '更新中']
 ]);
+
+const LogStatusMap = {
+  0: '空闲',
+  1: '启动',
+  2: '成功',
+  3: '失败'
+};
 export const columns = [
   {
     title: 'hostID',
@@ -83,7 +90,7 @@ export const log_columns = [
 
     title: '状态',
     dataIndex: 'case_state',
-    customRender: ({text}) => text || '--',
+    customRender: ({text}) => LogStatusMap[text] || '--',
     align: 'center'
   },
   {

@@ -15,7 +15,9 @@ const appStore = useAppStore()
 const showEmailModal = ref(false)
 const isMaintainingEmail = ref(false)
 const searchParams = ref({})
-const pagination = reactive<{ current: number; pageSize: number; total: number; }>({
+const pagination = reactive<{ current: number; pageSize: number; total: number; [key: string]: any; }>({
+  showQuickJumper: true,
+  showSizeChanger: true,
   current: 1,
   pageSize: 10,
   total: 0
@@ -36,6 +38,7 @@ const onSearchSubmit = (values) => {
 
 const handleTableChange = (pagination, filters, sorter) => {
   console.log('表格参数变化:', pagination, filters, sorter)
+  getList(pagination.current, pagination.pageSize, searchParams.value.mac, searchParams.value.machine_guid, searchParams.value.status)
 }
 
 const handleView = (record) => {
@@ -71,11 +74,9 @@ const onEmailModalOK = (values) => {
   console.log('onEmailModalOK:', values)
   isMaintainingEmail.value = true
   maintainEmail(values).then((res) => {
+    console.log('维护通知邮箱成功:', res)
     message.success(res.message)
     showEmailModal.value = false
-    email.value = ''
-  }).catch((error) => {
-  }).finally(() => {
   }).finally(() => {
     isMaintainingEmail.value = false
   })
@@ -91,8 +92,6 @@ const getMaintainEmail = () => {
   fetchMaintainEmail().then((res) => {
     console.log('获取维护通知邮箱成功:', res)
     email.value = res.data.conf_val
-  }).finally(() => {
-  }).catch((error) => {
   }).finally(() => {
     isMaintainingEmail.value = false
   })
@@ -172,7 +171,7 @@ onActivated(() => {
           :columns="columns"
           :data-source="listData"
           :pagination="pagination"
-          row-key="id"
+          row-key="host_id"
           @change="handleTableChange">
         <template #title>
           <span>HOST列表</span>
@@ -183,12 +182,7 @@ onActivated(() => {
             <a-space size="small">
               <a-button size="small" type="link" @click="handleView(record)">查看</a-button>
               <a-button size="small" type="link" @click="activeHost(record)">同意启用</a-button>
-              <a-popconfirm
-                  title="确认删除HOST？"
-                  ok-text="确认"
-                  cancel-text="取消"
-                  @confirm="confirmDelete(record)"
-              >
+              <a-popconfirm title="确认删除HOST？" ok-text="确认" cancel-text="取消" @confirm="confirmDelete(record)">
                 <a-button size="small" type="link" class="delete-btn">删除</a-button>
               </a-popconfirm>
             </a-space>
@@ -207,7 +201,14 @@ onActivated(() => {
 </template>
 <style scoped>
 :deep(.ant-table) {
-  padding: 24px;
+  padding: var(--componentPadding);
+  background: transparent;
+  box-shadow: none;
+}
+
+.host-table {
+  background: #ffffff;
+  border-radius: var(--borderRadius);
 }
 
 :deep(.ant-table-wrapper .ant-table-title) {
@@ -221,5 +222,9 @@ onActivated(() => {
 
 .delete-btn.ant-btn-link {
   color: red;
+}
+
+:deep(.ant-pagination) {
+  padding: 0 24px;
 }
 </style>

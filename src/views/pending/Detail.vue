@@ -34,8 +34,8 @@ onUnmounted(() => {
 </script>
 
 <template>
-  <div>
-    <a-space direction="vertical" style="width: 100%; gap: 24px;">
+  <div style="position: relative;height: 100%">
+    <a-space direction="vertical" style="width: 100%;gap: 16px;">
       <Header :title="`待审批HOST: ${hostId}`" subTitle="潜在的硬件改动">
         <template #action>
           <a-button type="primary">同意启用</a-button>
@@ -61,12 +61,16 @@ onUnmounted(() => {
           <a-collapse expandIconPosition="end" v-model:activeKey="activeKey">
             <a-collapse-panel key="2" header="硬件信息">
               <HardwareDetail :info="detail?.hw_list"/>
+              <!--{{detail?.hw_list}}-->
             </a-collapse-panel>
           </a-collapse>
         </a-space>
-
       </div>
+
     </a-space>
+    <div class="footer">
+      <a-button @click="$router.back()">取消</a-button>
+    </div>
   </div>
 </template>
 
@@ -77,13 +81,27 @@ onUnmounted(() => {
   background: #ffffff;
   border-radius: var(--borderRadius);
   width: 100%;
+  height: 100%;
+  margin-bottom: 60px;
 }
 
 .detail-text {
   font-size: 16px;
 }
 
-:deep(.ant-collapse-header-text){
+:deep(.ant-collapse-header-text) {
   font-weight: bold;
+}
+
+.footer {
+  position: fixed;
+  bottom: 0;
+  height: 50px;
+  background: #ffffff;
+  width: calc(100% - 290px);
+  padding: 0 var(--componentPadding);
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
 }
 </style>

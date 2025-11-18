@@ -10,7 +10,7 @@ export const lightTheme = {
 	infoColor: '#1890ff',
 
 	// 背景色
-	backgroundColor: '#e6f7ff',
+	backgroundColor: '#f2f9ff',
 	componentBackgroundColor: 'rgba(255, 255, 255, 0)',
 
 	// 文字颜色

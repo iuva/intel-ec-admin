@@ -47,7 +47,6 @@ const reset = () => {
 
 const handleOk = () => {
   emits('ok', {email: email_value.value.trim()})
-  email_value.value = ''
 }
 
 const cancel = () => {

@@ -13,7 +13,13 @@ import Search from './components/Search.vue'
 const router = useRouter()
 const appStore = useAppStore()
 
-const pagination = reactive({current: 1, pageSize: 10, total: 0})
+const pagination =  reactive({
+  showQuickJumper: true,
+  showSizeChanger: true,
+  current: 1,
+  pageSize: 10,
+  total: 0
+})
 const listData = ref([])
 const searchParams = ref({})
 
@@ -141,7 +147,7 @@ onActivated(() => {
 
 </script>
 <template>
-  <div style="height: 100%;overflow: auto">
+  <div >
     <a-space direction="vertical" style="width: 100%; gap: 16px">
       <Header title="可用HOST管理" subTitle="HOST测试机管理"/>
       <Search @reset="onSearchReset" @submit="onSearchSubmit"/>
@@ -151,7 +157,7 @@ onActivated(() => {
           :columns="columns"
           :data-source="listData"
           :pagination="pagination"
-          row-key="id"
+          row-key="host_id"
           @change="handleTableChange">
         <template #title>
           <span>HOST列表</span>
@@ -178,10 +184,17 @@ onActivated(() => {
   </div>
 </template>
 <style scoped>
+
+.host-table{
+  background: #ffffff;
+  border-radius: var(--borderRadius);
+}
 :deep(.ant-table) {
-  padding: 24px;
+  padding: var(--componentPadding);
   height: 100%;
   overflow: auto;
+  background: transparent;
+  box-shadow:none;
 }
 
 :deep(.ant-table-wrapper .ant-table-title) {
@@ -195,5 +208,9 @@ onActivated(() => {
 
 .delete-btn.ant-btn-link {
   color: red;
+}
+
+:deep(.ant-pagination){
+  padding: 0 24px;
 }
 </style>

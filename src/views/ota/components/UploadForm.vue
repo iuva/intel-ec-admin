@@ -11,8 +11,13 @@
         <a-col span="16" offset="1">
 
           <a-form-item name="conf_val" label="安装包" :rules="[{ required: true, message: '请上传安装包' }]">
-            <a-upload :showUploadList="false" :max-count="1" class="version-upload" v-model:fileList="uploadModel.conf_val" list-type="text"
-                      :customRequest="customRequest" @change="handleChange">
+            <a-upload
+                :showUploadList="false"
+                :max-count="1"
+                class="version-upload"
+                v-model:fileList="uploadModel.conf_val"
+                list-type="text"
+                :customRequest="customRequest" @change="handleChange">
               <a-button :loading="uploadStatus == 'uploading'" :danger="uploadStatus == 'error'">
                 {{ fileUrl.length == 0 ? '点击上传' : fileUrl }}
               </a-button>
@@ -59,11 +64,16 @@ const uploadModel = reactive<FormState>({
 })
 const handleSubmit = () => {
   uploadForm.value.validate().then((valid) => {
-    console.log('表单校验成功:', valid)
-    valid.conf_val = valid.conf_val[0].url
-    valid.id = uploadModel.id
-    valid.conf_name = uploadModel.conf_name
-    emit('submit', valid)
+
+    if (props.otaData.conf_ver === valid.conf_ver) {
+      message.error('版本已存在，请勿重复创建')
+    } else {
+      console.log('表单校验成功:', valid)
+      valid.conf_val = valid.conf_val[0].url
+      valid.id = uploadModel.id
+      valid.conf_name = uploadModel.conf_name
+      emit('submit', valid)
+    }
   }).catch((error) => {
     console.log('表单校验出错:', error)
   })

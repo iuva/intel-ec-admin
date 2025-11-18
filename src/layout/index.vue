@@ -1,11 +1,12 @@
 <template>
   <a-spin :spinning="loading">
     <a-layout class="layout" :class="{ 'dark-layout': isDark }">
-      <!-- 头部 -->
       <a-layout-header class="header">
         <div class="logo">
-          <AuditOutlined/>
-          <span class="text">{{ appName }}</span>
+          <div style="width: 240px;margin-right: 16px">
+            <AuditOutlined style="margin-right: 8px"/>
+            <span class="text">{{ appName }}</span>
+          </div>
           <a-button type="link" @click="toggleCollapsed" style="font-size: 16px;color: black">
             <template #icon>
               <MenuUnfoldOutlined v-if="collapsed"/>
@@ -21,9 +22,10 @@
         </div>
       </a-layout-header>
 
-      <a-layout>
-        <a-layout-sider width="256" v-model:collapsed="collapsed" class="sidebar">
-          <a-menu mode="inline" :selected-keys="[currentKey,selectedKey]" :default-open-keys="['enabled']"
+      <a-layout class="content-container" has-sider>
+        <a-layout-sider width="240" v-model:collapsed="collapsed" class="sidebar">
+
+          <a-menu mode="inline" :selected-keys="[selectedKey]" :default-open-keys="['enabled']"
                   class="menu-sidebar">
             <a-menu-item key="/enabled" popupClassName="custom-sub-menu" @click="navigate('/enabled')">
               <span>
@@ -45,6 +47,7 @@
             </a-menu-item>
           </a-menu>
         </a-layout-sider>
+
         <a-layout-content class="content">
           <router-view v-slot="{ Component,route}">
             <transition name="fade" mode="out-in">
@@ -112,13 +115,11 @@ export default {
     const selectedKey = computed(() => {
       const currentPath = router.currentRoute.value.path
       // 当访问详情页时，高亮列表菜单项
-      // if (currentPath.includes('/detail/')) {
-      //   return '/list'
-      // }
-      if (currentKey.value.length == 0) {
-        currentKey.value = currentPath
+      if (currentPath.includes('/detail/')) {
+        return currentPath.substring(0, currentPath.lastIndexOf('/detail/'))
+
       }
-      return currentKey.value
+      return currentPath
     })
 
     // 导航到指定路径
@@ -226,9 +227,10 @@ export default {
   align-items: center;
   padding: 0 24px;
   background: var(--componentBackgroundColor, rgba(255, 255, 255, 0));
-  box-shadow: var(--boxShadow, 0 2px 8px rgba(0, 0, 0, 0.1));
+  box-shadow: none;
   transition: all 0.3s ease;
 }
+
 
 .logo {
   display: flex;
@@ -254,14 +256,20 @@ export default {
 }
 
 .menu-sidebar {
-  height: 100%;
+  height: calc(100vh - 64px);
   border-right: 1px solid;
   transition: all 0.3s ease;
+  margin-bottom: 16px;
+}
+
+.content-container {
+  position: relative;
 }
 
 .content {
-  margin: 24px;
-  margin-top: 0;
+  height: calc(100vh - 64px);
+  overflow: auto;
+  margin: 0 16px 0 16px;
   min-height: 280px;
   border-radius: 8px;
   transition: all 0.3s ease;
@@ -278,13 +286,24 @@ export default {
 }
 
 .ant-layout .ant-layout-sider {
-  background-color: rgba(255, 255, 255, 1);
-  border-radius: 12px;
+  background-color: rgba(255, 255, 255, 0);
   margin-left: 20px;
   box-shadow: none;
 }
 
+.ant-layout .ant-layout-sider-collapsed .ant-menu-inline-collapsed {
+  background-color: rgba(255, 255, 255, 1);
+  border-radius: 12px;
+  box-shadow: none;
+}
+
 :deep(.ant-menu-inline) {
-  background-color: rgba(255, 255, 255, 0) !important;
+  background-color: rgba(255, 255, 255, 1);
+  border-radius: 12px;
+}
+
+* {
+  scrollbar-width: none;
+  scrollbar-color: rgba(0, 0, 0, 0.3) transparent; /* Firefox: thumb + track */
 }
 </style>

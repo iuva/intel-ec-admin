@@ -23,17 +23,9 @@ import {fetchOTAList, deploy} from '@/api/ota'
 import UploadForm from './components/UploadForm.vue'
 import Header from '@/components/Header.vue'
 
-const router = useRouter()
 const appStore = useAppStore()
-const loading = ref(false)
 const list = ref([])
 const activeKey = ref([])
-
-const pagination = reactive({
-  current: 1,
-  pageSize: 10,
-  total: 0
-})
 
 // 获取列表数据
 const fetchList = () => {
@@ -52,28 +44,11 @@ const deployOTA = (data) => {
   appStore.setLoading(true)
   deploy(data).then((res) => {
     console.log('deploy OTA response:', res)
-    message.success('OTA下发成功')
+    message.success(res.message)
     fetchList()
-  }).catch((err) => {
+  }).catch(() => {
     appStore.setLoading(false)
   })
-}
-
-// 搜索
-const handleSearch = () => {
-  pagination.current = 1
-  fetchList()
-}
-
-// 表格变化处理
-const handleTableChange = (pagination) => {
-  Object.assign(pagination, pagination)
-  fetchList()
-}
-
-// 查看详情
-const handleView = (record) => {
-  router.push(`/detail/${record.id}`)
 }
 
 onMounted(() => {
@@ -87,7 +62,8 @@ onMounted(() => {
   border-radius: var(--borderRadius);
   background: #ffffff;
 }
-:deep(.ant-collapse-header-text){
+
+:deep(.ant-collapse-header-text) {
   font-weight: bold;
 }
 </style>

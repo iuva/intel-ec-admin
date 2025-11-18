@@ -104,7 +104,7 @@ const submit = () => {
 .search-container {
 
   background-color: #ffffff;
-  border-radius: 14px;
+  border-radius: var(--borderRadius);
   padding: 24px 24px 0px;
 
 }

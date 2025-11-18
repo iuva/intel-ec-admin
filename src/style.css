@@ -7,7 +7,7 @@
     --errorColor: #f5222d;
     --infoColor: #1890ff;
 
-    --backgroundColor: #e6f7ff;
+    --backgroundColor: #f2f4f8;
     --componentBackgroundColor: rgba(255, 255, 255, 0);
 
     --textColor: #333333;
@@ -20,9 +20,10 @@
     --boxShadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 
     --hoverColor: #f0f0f0;
-    --activeColor: #e6f7ff;
+    --activeColor: #f2f4f8;
     --borderRadius: 14px;
-    --componentPadding:24px
+    --componentPadding:24px;
+    --componentMargin:14px;
 }
 
 /* 深色主题CSS变量覆盖 */

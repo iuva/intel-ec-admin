@@ -21,7 +21,12 @@ const showPasswordModal = ref(false)
 const currentPassword = ref('')
 const isMaintainingPassword = ref(false)
 
-const pagination = reactive({current: 1, pageSize: 10, total: 0, pageSizeOptions: ['10', '20', '30', '40']})
+const pagination = reactive({
+  showSizeChanger: true,
+  current: 1,
+  pageSize: 10,
+  total: 0
+})
 
 const getLogs = (id, page, size = 10) => {
   appStore.setLoading(true)
@@ -154,8 +159,8 @@ watch(detail, (newVal) => {
 </script>
 
 <template>
-  <div>
-    <a-space direction="vertical" style="width: 100%; gap: 24px;">
+  <div style="position: relative;height: 100%">
+    <a-space direction="vertical" style="width: 100%;gap: 16px;">
       <Header :title="`HOST ID: ${hostId}`" subTitle="case执行中">
         <template #action>
           <a-space :size="30">
@@ -206,6 +211,9 @@ watch(detail, (newVal) => {
 
       </div>
     </a-space>
+    <div class="footer">
+      <a-button @click="$router.back()">取消</a-button>
+    </div>
   </div>
   <PasswordModal
       :visible.sync="showPasswordModal"
@@ -222,6 +230,7 @@ watch(detail, (newVal) => {
   background: #ffffff;
   border-radius: var(--borderRadius);
   width: 100%;
+  margin-bottom: 60px;
 }
 
 .detail-text {
@@ -234,5 +243,17 @@ watch(detail, (newVal) => {
 
 :deep(.log-table .ant-table) {
   box-shadow: none;
+}
+
+.footer {
+  height: 50px;
+  background: #ffffff;
+  width: calc(100% - 290px);
+  padding: 0 var(--componentPadding);
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  position: fixed;
+  bottom: 0
 }
 </style>
