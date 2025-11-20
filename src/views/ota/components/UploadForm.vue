@@ -64,12 +64,13 @@ const uploadModel = reactive<FormState>({
 })
 const handleSubmit = () => {
   uploadForm.value.validate().then((valid) => {
+    console.log('表单数据:', valid)
 
     if (props.otaData.conf_ver === valid.conf_ver) {
       message.error('版本已存在，请勿重复创建')
     } else {
       console.log('表单校验成功:', valid)
-      valid.conf_val = valid.conf_val[0].url
+      valid.conf_val = valid.conf_val[0].name
       valid.id = uploadModel.id
       valid.conf_name = uploadModel.conf_name
       emit('submit', valid)
@@ -87,7 +88,7 @@ const handleChange = ({file}) => {
   } else if (file.status == 'done') {
     uploadModel['conf_val'] = [{
       url: file.response.data.file_url,
-      name: file.name,
+      name: file.response.data.saved_filename,
       status: 'done',
     }]
   }
