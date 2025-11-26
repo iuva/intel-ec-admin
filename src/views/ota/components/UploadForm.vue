@@ -10,12 +10,12 @@
         </a-col>
         <a-col span="16" offset="1">
 
-          <a-form-item name="conf_val" label="安装包" :rules="[{ required: true, message: '请上传安装包' }]">
+          <a-form-item name="conf_url" label="安装包" :rules="[{ required: true, message: '请上传安装包' }]">
             <a-upload
                 :showUploadList="false"
                 :max-count="1"
                 class="version-upload"
-                v-model:fileList="uploadModel.conf_val"
+                v-model:fileList="uploadModel.conf_url"
                 list-type="text"
                 :customRequest="customRequest" @change="handleChange">
               <a-button :loading="uploadStatus == 'uploading'" :danger="uploadStatus == 'error'">
@@ -41,7 +41,8 @@ interface FormState {
   conf_ver: string;
   id: string;
   conf_name: string;
-  conf_val: Array<string>;
+  conf_url: Array<string>;
+  conf_md5: string | null | undefined;
 }
 
 const props = defineProps<{
@@ -58,9 +59,10 @@ const fileUrl = ref('')
 
 const uploadModel = reactive<FormState>({
   conf_ver: '',
-  conf_val: [],
+  conf_url: [],
   id: '',
   conf_name: '',
+  conf_md5: '',
 })
 const handleSubmit = () => {
   uploadForm.value.validate().then((valid) => {
@@ -70,9 +72,12 @@ const handleSubmit = () => {
       message.error('版本已存在，请勿重复创建')
     } else {
       console.log('表单校验成功:', valid)
-      valid.conf_val = valid.conf_val[0].name
+      valid.conf_url = valid.conf_url[0].name
       valid.id = uploadModel.id
       valid.conf_name = uploadModel.conf_name
+      if(uploadModel.conf_md5) {
+        valid.conf_md5 = uploadModel.conf_md5
+      }
       emit('submit', valid)
     }
   }).catch((error) => {
@@ -83,10 +88,10 @@ const handleSubmit = () => {
 const handleChange = ({file}) => {
   console.log('file change file:', file)
   if (file.status == 'removed') {
-    uploadModel['conf_val'] = null
+    uploadModel['conf_url'] = null
     fileUrl.value = ''
   } else if (file.status == 'done') {
-    uploadModel['conf_val'] = [{
+    uploadModel['conf_url'] = [{
       url: file.response.data.file_url,
       name: file.response.data.saved_filename,
       status: 'done',
@@ -106,7 +111,7 @@ const customRequest = (options) => {
     onSuccess(res)
   }).catch((error) => {
     console.log('upload error:', error)
-    uploadModel['conf_val'] = null
+    uploadModel['conf_url'] = null
     uploadStatus.value = 'error'
     onError(error)
   })
@@ -117,13 +122,14 @@ watch(() => props.otaData, (data) => {
     uploadModel['conf_ver'] = data.conf_ver
     uploadModel['id'] = data.id
     uploadModel['conf_name'] = data.conf_name
-    uploadModel['conf_val'] = [{
-      url: data.conf_val,
-      name: data.conf_val,
+    uploadModel['conf_url'] = [{
+      url: data.conf_url,
+      name: data.conf_url,
       status: 'done',
     }]
     uploadStatus.value = 'done'
-    fileUrl.value = data.conf_val
+    uploadModel['conf_md5'] = data.conf_md5
+    fileUrl.value = data.conf_url || ''
   }
 }, {
   deep: true,
