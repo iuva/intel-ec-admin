@@ -103,7 +103,7 @@ const stopHost = (record) => {
 
 const offlineHost = (record) => {
   Modal.confirm({
-    title: createVNode('div', {style: 'color:red;font-size:16px;'}, '确认强制下线这条HOST？'),
+    title: createVNode('div', {style: 'color:red;font-size:16px;'}, 'host未占用状态才可以下线'),
     icon: createVNode(ExclamationCircleOutlined),
     onOk() {
       confirmOfflineHost(record)
@@ -167,7 +167,7 @@ onActivated(() => {
             <a-space size="small">
               <a-button size="small" type="link" @click="handleView(record)">查看</a-button>
               <a-button size="small" type="link" @click="stopHost(record)">停用</a-button>
-              <a-button size="small" type="link" @click="offlineHost(record)">强制下线</a-button>
+              <a-button size="small" type="link" @click="offlineHost(record)">下线</a-button>
               <a-popconfirm
                   title="确认删除HOST？"
                   ok-text="确认"
