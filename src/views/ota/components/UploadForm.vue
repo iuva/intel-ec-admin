@@ -8,8 +8,7 @@
             <a-input class="version-input" placeholder="请输入" v-model:value="uploadModel.conf_ver"/>
           </a-form-item>
         </a-col>
-        <a-col span="16" offset="1">
-
+        <a-col span="7" offset="1">
           <a-form-item name="conf_url" label="安装包" :rules="[{ required: true, message: '请上传安装包' }]">
             <a-upload
                 :showUploadList="false"
@@ -22,6 +21,12 @@
                 {{ fileUrl.length == 0 ? '点击上传' : fileUrl }}
               </a-button>
             </a-upload>
+          </a-form-item>
+        </a-col>
+        <a-col span="7" offset="1">
+          <a-form-item name="conf_md5" label="MD5"
+                       :rules="[{ required: false, message: '请输入MD5' },{ min: 32, max: 32, message: '请输入正确MD5' }]">
+            <a-input class="version-input" placeholder="请输入" v-model:value="uploadModel.conf_md5"/>
           </a-form-item>
         </a-col>
         <a-col span="2" offset="1">
@@ -75,8 +80,8 @@ const handleSubmit = () => {
       valid.conf_url = valid.conf_url[0].name
       valid.id = uploadModel.id
       valid.conf_name = uploadModel.conf_name
-      if(uploadModel.conf_md5) {
-        valid.conf_md5 = uploadModel.conf_md5
+      if(!valid.conf_md5){
+        delete valid.conf_md5
       }
       emit('submit', valid)
     }
