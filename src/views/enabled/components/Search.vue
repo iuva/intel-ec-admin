@@ -70,9 +70,9 @@ const searchModel = ref({
   username: '',
   status: null
 })
-const statusList = [...HostStatusMap.entries()]
-console.log('statusList = ', statusList)
 
+const statusList = [...HostStatusMap.entries()].filter(([key]) => key < 5)
+console.log('statusList = ', statusList)
 
 const toggle = () => {
   deployed.value = !deployed.value

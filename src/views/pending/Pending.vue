@@ -56,7 +56,11 @@ const activeHost = (record) => {
     title: '确认启用这条HOST？',
     icon: createVNode(ExclamationCircleOutlined),
     onOk() {
-      confirmActivateHost(1, [record.host_id])
+      if (record.diff_state == 1) {
+        confirmActivateHost(record.diff_state, null)
+      } else {
+        confirmActivateHost(record.diff_state, [record.host_id])
+      }
     },
     okText: '确认',
     cancelText: '取消',
@@ -138,11 +142,31 @@ const getList = (page = 1, size = 10, mac = '', mg_id = '', state = null) => {
 
 const confirmActivateHost = (diff_type, host_ids) => {
 
+  console.log('aconfirmActivateHost:', diff_type, host_ids)
   appStore.setLoading(true)
   activateHost({diff_type, host_ids}).then((res) => {
     console.log('activate host response:', res)
-    message.success(res.message)
-    getList(pagination.current, pagination.pageSize, searchParams.value.mac, searchParams.value.machine_guid, searchParams.value.status)
+
+    const data = res.data
+    const failMessage = data.results.filter(item => !item.success).map((item) => item.message).join('\n')
+    const successMessage = data.results.filter(item => item.success).map((item) => item.message).join('\n')
+    const failed_count = data.failed_count
+    const success_count = data.success_count
+    if (success_count > 0) {
+
+      message.success(successMessage)
+      getList(pagination.current, pagination.pageSize, searchParams.value.mac, searchParams.value.machine_guid, searchParams.value.status)
+    }
+    if (failed_count > 0) {
+      message.error(failMessage)
+      appStore.setLoading(false)
+    }
+
+    if (success_count == 0 && failed_count == 0) {
+      message.success(res.message)
+      appStore.setLoading(false)
+    }
+
   }).catch((error) => {
     appStore.setLoading(false)
   }).finally(() => {
@@ -150,13 +174,30 @@ const confirmActivateHost = (diff_type, host_ids) => {
 
 }
 
+const batchUpgrades = () => {
+  console.log('批量审批版本号升级:')
+  Modal.confirm({
+    title: '批量审批版本号升级',
+    icon: createVNode(ExclamationCircleOutlined),
+    onOk() {
+      confirmActivateHost(1, null)
+    },
+    okText: '确认',
+    cancelText: '取消',
+    class: 'logout-modal',
+  })
+}
+
 onMounted(() => {
   console.log('Pending onMounted')
   getList()
 })
 onActivated(() => {
-
   console.log('Pending onActivated')
+  if (sessionStorage.getItem('needRefresh')) {
+    getList(pagination.current, pagination.pageSize, searchParams.value.mac, searchParams.value.machine_guid, searchParams.value.status)
+    sessionStorage.removeItem('needRefresh')
+  }
 })
 
 </script>
@@ -175,7 +216,10 @@ onActivated(() => {
           @change="handleTableChange">
         <template #title>
           <span>HOST列表</span>
-          <a-button type="primary" @click="handleEmail">维护通知邮箱</a-button>
+          <a-space>
+            <a-button type="primary" @click="batchUpgrades">批量审批版本号升级</a-button>
+            <a-button type="primary" @click="handleEmail">维护通知邮箱</a-button>
+          </a-space>
         </template>
         <template #bodyCell="{ column, record }">
           <template v-if="column.key === 'action'">
