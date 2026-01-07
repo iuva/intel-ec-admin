@@ -1,16 +1,16 @@
 <template>
   <div class="list-container">
-    <a-card title="测试数据列表" class="list-card">
+    <a-card title="Test Data List" class="list-card">
       <!-- 搜索和筛选区域 -->
       <div class="search-bar">
         <a-input
           v-model:value="searchKeyword"
-          placeholder="请输入关键词搜索"
+          placeholder="Please enter keyword to search"
           allow-clear
           class="search-input"
           @pressEnter="handleSearch"
         />
-        <a-button type="primary" @click="handleSearch">搜索</a-button>
+        <a-button type="primary" @click="handleSearch">Search</a-button>
       </div>
 
       <!-- 数据列表 -->
@@ -23,7 +23,7 @@
       >
         <template #bodyCell="{ column, record }">
           <template v-if="column.key === 'action'">
-            <a-button type="link" @click="handleView(record)">查看详情</a-button>
+            <a-button type="link" @click="handleView(record)">View Details</a-button>
           </template>
         </template>
       </a-table>
@@ -57,28 +57,28 @@ export default {
         key: 'id'
       },
       {
-        title: '名称',
+        title: 'Name',
         dataIndex: 'name',
         key: 'name'
       },
       {
-        title: '描述',
+        title: 'Description',
         dataIndex: 'description',
         key: 'description'
       },
       {
-        title: '创建时间',
+        title: 'Creation Time',
         dataIndex: 'createTime',
         key: 'createTime'
       },
       {
-        title: '操作',
+        title: 'Action',
         key: 'action',
         width: 100
       }
     ]
 
-    // 获取列表数据
+    // Get list data
     const fetchList = async () => {
       loading.value = true
       try {
@@ -88,40 +88,40 @@ export default {
         //   pageSize: pagination.pageSize,
         //   keyword: searchKeyword.value
         // })
-        
-        // 模拟数据
+
+        // Mock data
         const mockData = {
           list: Array.from({ length: pagination.pageSize }, (_, index) => ({
             id: (pagination.current - 1) * pagination.pageSize + index + 1,
-            name: `测试项目${(pagination.current - 1) * pagination.pageSize + index + 1}`,
-            description: `这是测试项目${(pagination.current - 1) * pagination.pageSize + index + 1}的描述`,
+            name: `Test Project${(pagination.current - 1) * pagination.pageSize + index + 1}`,
+            description: `This is the description for test project${(pagination.current - 1) * pagination.pageSize + index + 1}`,
             createTime: new Date().toLocaleString()
           })),
           total: 100
         }
-        
+
         listData.value = mockData.list
         pagination.total = mockData.total
       } catch (error) {
-        console.error('获取列表失败:', error)
+        console.error('Failed to get list:', error)
       } finally {
         loading.value = false
       }
     }
 
-    // 搜索
+    // Search
     const handleSearch = () => {
       pagination.current = 1
       fetchList()
     }
 
-    // 表格变化处理
+    // Table change handling
     const handleTableChange = (pagination) => {
       Object.assign(pagination, pagination)
       fetchList()
     }
 
-    // 查看详情
+    // View details
     const handleView = (record) => {
       router.push(`/detail/${record.id}`)
     }

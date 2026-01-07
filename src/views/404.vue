@@ -7,8 +7,8 @@ const simpleImage = Empty.PRESENTED_IMAGE_SIMPLE
 
 <template>
   <div class="container">
-    <a-empty :image="simpleImage" description="没有找到页面" >
-      <a-button type="primary" @click="$router.replace('/')">返回首页</a-button>
+    <a-empty :image="simpleImage" description="Page not found" >
+      <a-button type="primary" @click="$router.replace('/')">Return to Home</a-button>
     </a-empty>
   </div>
 </template>

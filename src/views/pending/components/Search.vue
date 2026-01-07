@@ -6,19 +6,19 @@
           <a-row>
             <a-col :span="8">
               <a-form-item name="mac" label="mac">
-                <a-input v-model:value="searchModel.mac" class="search-input" placeholder="请输入"/>
+                <a-input v-model:value="searchModel.mac" class="search-input" placeholder="Please enter"/>
               </a-form-item>
             </a-col>
             <a-col :span="8" :offset="4">
               <a-form-item label="MachineGuid" name="machine_guid">
-                <a-input v-model:value="searchModel.machine_guid" class="search-input" placeholder="请输入"/>
+                <a-input v-model:value="searchModel.machine_guid" class="search-input" placeholder="Please enter"/>
               </a-form-item>
             </a-col>
           </a-row>
           <a-row v-show="deployed">
             <a-col :span="8">
-              <a-form-item label="状态" name="status">
-                <a-select v-model:value="searchModel.status" class="search-input" placeholder="请输入">
+              <a-form-item label="Status" name="status">
+                <a-select v-model:value="searchModel.status" class="search-input" placeholder="Please enter">
                   <a-select-option v-for="item in statusList" :key="item[0]" :value="item[0]">{{ item[1] }}</a-select-option>
                 </a-select>
               </a-form-item>
@@ -27,10 +27,10 @@
         </a-col>
         <a-col>
           <a-space>
-            <a-button @click="reset">重置</a-button>
-            <a-button type="primary" @click="submit">搜索</a-button>
+            <a-button @click="reset">Reset</a-button>
+            <a-button type="primary" @click="submit">Search</a-button>
             <a-button class="toggle-btn" type="link" @click="toggle">
-              {{ deployed ? '收缩' : '展开' }}
+              {{ deployed ? 'Collapse' : 'Expand' }}
               <DownOutlined :class="{ 'rotate-180': deployed }"/>
             </a-button>
           </a-space>

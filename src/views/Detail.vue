@@ -1,33 +1,33 @@
 <template>
   <div class="detail-container">
-    <a-card title="测试数据详情" class="detail-card">
-      <a-button type="link" @click="goBack">返回列表</a-button>
-      
+    <a-card title="Test Data Details" class="detail-card">
+      <a-button type="link" @click="goBack">Return to List</a-button>
+
       <div v-if="loading" class="loading">
-        <a-spin tip="加载中..." />
+        <a-spin tip="Loading..." />
       </div>
-      
+
       <div v-else-if="detailData" class="detail-content">
         <a-descriptions bordered column="2">
           <a-descriptions-item label="ID">{{ detailData.id }}</a-descriptions-item>
-          <a-descriptions-item label="名称">{{ detailData.name }}</a-descriptions-item>
-          <a-descriptions-item label="描述" :span="2">
+          <a-descriptions-item label="Name">{{ detailData.name }}</a-descriptions-item>
+          <a-descriptions-item label="Description" :span="2">
             {{ detailData.description }}
           </a-descriptions-item>
-          <a-descriptions-item label="创建时间">{{ detailData.createTime }}</a-descriptions-item>
-          <a-descriptions-item label="状态">
+          <a-descriptions-item label="Creation Time">{{ detailData.createTime }}</a-descriptions-item>
+          <a-descriptions-item label="Status">
             <a-tag :color="detailData.status === 'active' ? 'success' : 'default'">
-              {{ detailData.status === 'active' ? '活跃' : '禁用' }}
+              {{ detailData.status === 'active' ? 'Active' : 'Inactive' }}
             </a-tag>
           </a-descriptions-item>
-          <a-descriptions-item label="备注" :span="2">
-            {{ detailData.remark || '无' }}
+          <a-descriptions-item label="Notes" :span="2">
+            {{ detailData.remark || 'None' }}
           </a-descriptions-item>
         </a-descriptions>
       </div>
-      
+
       <div v-else class="no-data">
-        <a-empty description="暂无数据" />
+        <a-empty description="No data" />
       </div>
     </a-card>
   </div>
@@ -50,7 +50,7 @@ export default {
     const fetchDetail = async () => {
       const id = route.params.id
       if (!id) return
-      
+
       loading.value = true
       try {
         // 模拟数据，实际项目中调用真实接口
@@ -59,13 +59,13 @@ export default {
         // 模拟数据
         const mockDetail = {
           id: id,
-          name: `测试项目${id}`,
-          description: `这是测试项目${id}的详细描述信息，包含了项目的各种配置和说明。`,
+          name: `Test Project${id}`,
+          description: `This is the detailed description for test project${id}, including various configurations and instructions.`,
           createTime: new Date().toLocaleString(),
           status: Math.random() > 0.5 ? 'active' : 'inactive',
-          remark: `这是测试项目${id}的备注信息。`
+          remark: `This is the notes for test project${id}.`
         }
-        
+
         detailData.value = mockDetail
       } catch (error) {
         console.error('获取详情失败:', error)

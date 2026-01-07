@@ -28,7 +28,7 @@ const getHostDetail = (id) => {
 const activeHost = () => {
   console.log('activeHost:', detail.value)
   Modal.confirm({
-    title: '确认启用这条HOST？',
+    title: 'Confirm enabling this HOST?',
     icon: createVNode(ExclamationCircleOutlined),
     onOk() {
 
@@ -38,8 +38,8 @@ const activeHost = () => {
         confirmActivateHost(detail.value.diff_state, [hostId.value])
       }
     },
-    okText: '确认',
-    cancelText: '取消',
+    okText: 'OK',
+    cancelText: 'Cancel',
     class: 'logout-modal',
   })
 
@@ -85,15 +85,15 @@ onUnmounted(() => {
 <template>
   <div style="position: relative;height: 100%">
     <a-space direction="vertical" style="width: 100%;gap: 16px;">
-      <Header :title="`待审批HOST: ${hostId}`" subTitle="潜在的硬件改动">
+      <Header :title="`Pending HOST: ${hostId}`" subTitle="Potential hardware modification">
         <template #action>
-          <a-button :disabled="!detail || appStore.loading" @click="activeHost(detail)" type="primary">同意启用</a-button>
+          <a-button :disabled="!detail || appStore.loading" @click="activeHost(detail)" type="primary">Approve Enable</a-button>
         </template>
       </Header>
       <div class="detail-container">
         <a-space direction="vertical" style="width: 100%; gap: 24px;">
           <a-collapse expandIconPosition="end" v-model:activeKey="activeKey">
-            <a-collapse-panel key="1" header="识别信息">
+            <a-collapse-panel key="1" header="Identification Information">
               <a-row>
                 <a-col span="8"><span class="detail-text">MachineGuid:  {{ detail?.mg_id ? detail.mg_id : '--' }}</span></a-col>
                 <a-col span="8"><span class="detail-text">mac:  {{ detail?.mac ? detail.mac : '--' }}</span></a-col>
@@ -108,7 +108,7 @@ onUnmounted(() => {
 
           </a-collapse>
           <a-collapse expandIconPosition="end" v-model:activeKey="activeKey">
-            <a-collapse-panel key="2" header="硬件信息">
+            <a-collapse-panel key="2" header="Hardware Information">
               <HardwareDetail :info="detail?.hw_list"/>
               <!--{{detail?.hw_list}}-->
             </a-collapse-panel>
@@ -118,7 +118,7 @@ onUnmounted(() => {
 
     </a-space>
     <div class="footer">
-      <a-button @click="$router.back()">取消</a-button>
+      <a-button @click="$router.back()">Cancel</a-button>
     </div>
   </div>
 </template>

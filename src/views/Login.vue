@@ -8,20 +8,20 @@
     <a-col :xs="24" :sm="24" :md="24" :lg="11" :xl="11">
       <div class="login-container">
         <div class="login-form-wrapper">
-          <h2 class="login-title">账号密码登录</h2>
+          <h2 class="login-title">Account Password Login</h2>
           <a-form :model="formState" name="login" :rules="rules" ref="formRef" class="login-form">
             <a-form-item name="username">
-              <a-input v-model:value="formState.username" placeholder="请输入登录账号" prefix-icon="<user-outlined />"/>
+              <a-input v-model:value="formState.username" placeholder="Please enter login account" prefix-icon="<user-outlined />"/>
             </a-form-item>
 
             <a-form-item name="password">
-              <a-input-password v-model:value="formState.password" placeholder="请输入密码" prefix-icon="<lock-outlined />"
+              <a-input-password v-model:value="formState.password" placeholder="Please enter password" prefix-icon="<lock-outlined />"
                                 visibilityToggle/>
             </a-form-item>
 
             <a-form-item>
               <a-button type="primary" html-type="submit" class="login-button" :loading="loading" @click="handleSubmit">
-                登录
+                Login
               </a-button>
             </a-form-item>
           </a-form>
@@ -58,10 +58,10 @@ export default {
 
     const rules = {
       username: [
-        {required: true, message: '请输入账号', trigger: 'blur'}
+        {required: true, message: 'Please enter account', trigger: 'blur'}
       ],
       password: [
-        {required: true, message: '请输入密码', trigger: 'blur'}
+        {required: true, message: 'Please enter password', trigger: 'blur'}
       ]
     }
 
@@ -73,7 +73,7 @@ export default {
         // 由于是模拟环境，我们直接模拟登录成功
         // 实际项目中应该调用真实的登录接口
         const {data, message} = await login(formState)
-        console.log('登录成功:', data, message)
+        console.log('Login successful:', data, message)
 
         // const rt = getRefreshToken()
         // refreshToken(rt)
@@ -84,7 +84,7 @@ export default {
         antdMessage.success(message)
         router.push('/')
       } catch (error) {
-        console.error('登录失败:', error)
+        console.error('Login failed:', error)
         // message.error('登录失败，请检查账号密码')
       } finally {
         loading.value = false

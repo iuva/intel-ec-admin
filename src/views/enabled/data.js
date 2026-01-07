@@ -1,20 +1,20 @@
 export const HostStatusMap = new Map([
-  [0, '空闲'],
-  [1, '已锁定'],
-  [2, '已占用'],
-  [3, 'case执行中'],
-  [4, '离线'],
-  [5, '待激活'],
-  [6, '硬件改动'],
-  [7, '手动停用'],
-  [8, '更新中']
+  [0, 'Idle'],
+  [1, 'Locked'],
+  [2, 'Occupied'],
+  [3, 'Case Executing'],
+  [4, 'Offline'],
+  [5, 'Pending Activation'],
+  [6, 'Hardware Modification'],
+  [7, 'Manually Disabled'],
+  [8, 'Updating']
 ]);
 
 const LogStatusMap = {
-  0: '空闲',
-  1: '启动',
-  2: '成功',
-  3: '失败'
+  0: 'Idle',
+  1: 'Start',
+  2: 'Success',
+  3: 'Failed'
 };
 export const columns = [
   {
@@ -43,19 +43,19 @@ export const columns = [
   },
   {
 
-    title: '使用人',
+    title: 'User',
     dataIndex: 'use_by',
     customRender: ({text}) => text || '--',
     align: 'center'
   },
   {
-    title: '状态',
+    title: 'Status',
     dataIndex: 'host_state',
     customRender: ({text}) => HostStatusMap.get(text) || '--',
     align: 'center'
   },
   {
-    title: '操作',
+    title: 'Action',
     key: 'action',
     width: 100,
     align: 'center'
@@ -63,38 +63,38 @@ export const columns = [
 ]
 export const log_columns = [
   {
-    title: '日期',
+    title: 'Date',
     dataIndex: 'exec_date',
     customRender: ({text}) => text || '--',
     align: 'center'
   },
   {
-    title: '时间',
+    title: 'Time',
     dataIndex: 'exec_time',
     align: 'center',
     customRender: ({text}) => text || '--',
   },
   {
-    title: '执行tc_id',
+    title: 'Execute tc_id',
     dataIndex: 'tc_id',
     align: 'center',
     customRender: ({text}) => text || '--',
   },
   {
-    title: '使用人',
+    title: 'User',
     dataIndex: 'use_by',
     customRender: ({text}) => text || '--',
     align: 'center'
   },
   {
 
-    title: '状态',
+    title: 'Status',
     dataIndex: 'case_state',
     customRender: ({text}) => LogStatusMap[text] || '--',
     align: 'center'
   },
   {
-    title: '备注',
+    title: 'Notes',
     dataIndex: 'result_msg',
     customRender: ({text}) => text || '--',
     align: 'center'

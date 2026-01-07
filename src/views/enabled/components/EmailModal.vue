@@ -2,13 +2,13 @@
   <div>
     <a-modal
         v-model:open="open"
-        title="维护通知邮箱"
+        title="Maintain Notification Email"
         :ok-button-props="{ disabled: email_value === '' ||inputStatus === 'error' }"
         @cancel="cancel"
         :confirmLoading="modalLoading"
         @ok="handleOk"
-        cancel-text="取消"
-        ok-text="保存">
+        cancel-text="Cancel"
+        ok-text="Save">
       <div>
 
         <a-textarea
@@ -58,7 +58,7 @@ const cancel = () => {
 const verifyMailbox = (input) => {
   console.log('Verify mailbox', input)
   if (/，/.test(input)) {
-    return {valid: false, message: '请使用英文逗号（,）分隔邮箱地址'}
+    return {valid: false, message: 'Please use English comma (,) to separate email addresses'}
   }
 
   const emails = input.trim().split(',')
@@ -68,14 +68,14 @@ const verifyMailbox = (input) => {
   for (const email of emails) {
     const trimmed = email.trim()
     if (trimmed === '') {
-      return {valid: false, message: '存在空的邮箱项，请检查输入'}
+      return {valid: false, message: 'Empty email item exists, please check input'}
     }
     if (!emailRegex.test(trimmed)) {
-      return {valid: false, message: `邮箱格式错误: ${trimmed}`}
+      return {valid: false, message: `Email format error: ${trimmed}`}
     }
   }
 
-  return {valid: true, message: '邮箱格式正确'}
+  return {valid: true, message: 'Email format correct'}
 }
 
 watch(() => props.visible, (newVal) => {

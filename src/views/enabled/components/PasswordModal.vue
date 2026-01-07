@@ -2,18 +2,18 @@
   <div>
     <a-modal
         v-model:open="open"
-        title="修改HOST密码"
+        title="Modify HOST Password"
         :ok-button-props="{ disabled: password_value === '' ||inputStatus === 'error' }"
         @cancel="cancel"
         :confirmLoading="modalLoading"
         @ok="handleOk"
-        cancel-text="取消"
-        ok-text="保存">
+        cancel-text="Cancel"
+        ok-text="Save">
       <div>
 
         <a-input
             v-model:value="password_value"
-            placeholder="请输入新密码"
+            placeholder="Please enter new password"
             :rows="4"
             :status="inputStatus"/>
         <div style="height:10px">
@@ -58,10 +58,10 @@ const cancel = () => {
 const verifyPassword = (input) => {
   console.log('Verify password', input)
   if (input.trim() === '') {
-    return {valid: false, message: '请输入新密码'}
+    return {valid: false, message: 'Please enter new password'}
   }
 
-  return {valid: true, message: '密码格式正确'}
+  return {valid: true, message: 'Password format correct'}
 }
 
 watch(() => props.visible, (newVal) => {

@@ -17,7 +17,7 @@
 
         <div class="header-actions">
           <a-button type="text" @click="handleLogout" :style="{ color: isDark ? '#e0e0e0' : '#333333' }">
-            退出登录
+            Logout
           </a-button>
         </div>
       </a-layout-header>
@@ -30,19 +30,19 @@
             <a-menu-item key="/enabled" popupClassName="custom-sub-menu" @click="navigate('/enabled')">
               <span>
                 <ContainerOutlined/>
-                <span>可用HOST管理</span>
+                <span>Available HOST Management</span>
               </span>
             </a-menu-item>
             <a-menu-item key="/pending" popupClassName="custom-sub-menu" @click="navigate('/pending')">
               <span>
                 <AuditOutlined/>
-                <span>待审批HOST</span>
+                <span>Pending HOST</span>
               </span>
             </a-menu-item>
             <a-menu-item key="/ota" popupClassName="custom-sub-menu" @click="navigate('/ota')">
             <span>
               <CloudUploadOutlined/>
-              <span>OTA管理</span>
+              <span>OTA Management</span>
             </span>
             </a-menu-item>
           </a-menu>
@@ -162,14 +162,14 @@ export default {
       // refreshToken(rt,token)
 
       Modal.confirm({
-        title: createVNode('div', {style: 'color:red;font-size:16px;'}, '确认退出登录？'),
+        title: createVNode('div', {style: 'color:red;font-size:16px;'}, 'Confirm logout?'),
         icon: createVNode(ExclamationCircleOutlined),
         onOk() {
           removeToken()
           router.push('/login')
         },
-        okText: '确认',
-        cancelText: '取消',
+        okText: 'OK',
+        cancelText: 'Cancel',
         class: 'logout-modal',
       });
     }

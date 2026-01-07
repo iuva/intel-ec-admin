@@ -5,19 +5,19 @@ export const pageRouters = [
   },
   {
     path: 'enabled',
-    title: '可用HOST管理',
+    title: 'Available HOST Management',
     icon: 'container-outlined',
     children: [
       {
         path: '',
-        title: '可用HOST列表',
+        title: 'Available HOST List',
         name: 'EnabledList',
         meta: {keepAlive: true},
         component: () => import('../views/enabled/Enabled.vue'),
       },
       {
         path: 'detail/:id?',
-        title: '可用HOST详情',
+        title: 'Available HOST Details',
         name: 'EnabledDetail',
         meta: {keepAlive: false},
         component: () => import('../views/enabled/Detail.vue'),
@@ -26,19 +26,19 @@ export const pageRouters = [
   },
   {
     path: 'pending',
-    title: '待审批HOST管理',
+    title: 'Pending HOST Management',
     icon: 'audit-outlined',
     children: [
       {
         path: '',
-        title: '待审批HOST列表',
+        title: 'Pending HOST List',
         name: 'PendingList',
         meta: {keepAlive: true},
         component: () => import('../views/pending/Pending.vue'),
       },
       {
         path: 'detail/:id?',
-        title: '待审批HOST详情',
+        title: 'Pending HOST Details',
         name: 'PendingDetail',
         meta: {keepAlive: false},
         component: () => import('../views/pending/Detail.vue'),
@@ -48,7 +48,7 @@ export const pageRouters = [
   {
     path: 'ota',
     name: 'ota',
-    title: 'OTA管理',
+    title: 'OTA Management',
     icon: 'cloud-upload-outlined',
     meta: {keepAlive: true},
     component: () => import('../views/ota/Ota.vue'),

@@ -25,19 +25,19 @@ const pagination = reactive<{ current: number; pageSize: number; total: number; 
 const listData = ref([])
 const email = ref('')
 const onSearchReset = () => {
-  console.log('搜索重置')
+  console.log('Search reset')
 
   getList(1, pagination.pageSize)
 }
 const onSearchSubmit = (values) => {
-  console.log('搜索提交，参数：', values)
+  console.log('Search submitted, parameters:', values)
   searchParams.value = values
   getList(1, pagination.pageSize, values.mac, values.machine_guid, values.status)
 }
 
 
 const handleTableChange = (pagination, filters, sorter) => {
-  console.log('表格参数变化:', pagination, filters, sorter)
+  console.log('Table parameters changed:', pagination, filters, sorter)
   getList(pagination.current, pagination.pageSize, searchParams.value.mac, searchParams.value.machine_guid, searchParams.value.status)
 }
 
@@ -53,7 +53,7 @@ const handleView = (record) => {
 const activeHost = (record) => {
   console.log('activeHost:', record)
   Modal.confirm({
-    title: '确认启用这条HOST？',
+    title: 'Confirm enabling this HOST?',
     icon: createVNode(ExclamationCircleOutlined),
     onOk() {
       if (record.diff_state == 1) {
@@ -62,14 +62,14 @@ const activeHost = (record) => {
         confirmActivateHost(record.diff_state, [record.host_id])
       }
     },
-    okText: '确认',
-    cancelText: '取消',
+    okText: 'OK',
+    cancelText: 'Cancel',
     class: 'logout-modal',
   })
 
 }
 const handleEmail = () => {
-  console.log('维护通知邮箱')
+  console.log('Maintain notification email')
   showEmailModal.value = true
   getMaintainEmail()
 }
@@ -78,7 +78,7 @@ const onEmailModalOK = (values) => {
   console.log('onEmailModalOK:', values)
   isMaintainingEmail.value = true
   maintainEmail(values).then((res) => {
-    console.log('维护通知邮箱成功:', res)
+    console.log('Maintain notification email successful:', res)
     message.success(res.message)
     showEmailModal.value = false
   }).finally(() => {
@@ -94,16 +94,16 @@ const onEmailModalCancel = (values) => {
 const getMaintainEmail = () => {
   isMaintainingEmail.value = true
   fetchMaintainEmail().then((res) => {
-    console.log('获取维护通知邮箱成功:', res)
+    console.log('Get maintain notification email successful:', res)
     email.value = res.data.conf_val
   }).finally(() => {
     isMaintainingEmail.value = false
   })
-  console.log('获取维护通知邮箱')
+  console.log('Get maintain notification email')
 }
 
 const confirmDelete = (record) => {
-  console.log('删除:', record)
+  console.log('Delete:', record)
   appStore.setLoading(true)
   deleteEnabledHost(record.host_id).then(res => {
     console.log('res', res)
@@ -116,7 +116,7 @@ const confirmDelete = (record) => {
 }
 
 const getList = (page = 1, size = 10, mac = '', mg_id = '', state = null) => {
-  console.log('获取列表数据')
+  console.log('Get list data')
   appStore.setLoading(true)
   fetchPendingList({
     page: page,
@@ -175,15 +175,15 @@ const confirmActivateHost = (diff_type, host_ids) => {
 }
 
 const batchUpgrades = () => {
-  console.log('批量审批版本号升级:')
+  console.log('Batch approve version upgrade:')
   Modal.confirm({
-    title: '批量审批版本号升级',
+    title: 'Batch approve version upgrade',
     icon: createVNode(ExclamationCircleOutlined),
     onOk() {
       confirmActivateHost(1, null)
     },
-    okText: '确认',
-    cancelText: '取消',
+    okText: 'OK',
+    cancelText: 'Cancel',
     class: 'logout-modal',
   })
 }
@@ -204,7 +204,7 @@ onActivated(() => {
 <template>
   <div>
     <a-space direction="vertical" style="width: 100%; gap: 16px;">
-      <Header title="待审批HOST" subTitle="审批通过后可进入可用HOST清单（插件可见）"/>
+      <Header title="Pending HOST" subTitle="After approval, it can enter the available HOST list (plugin visible)"/>
       <Search @reset="onSearchReset" @submit="onSearchSubmit"/>
       <!-- 数据列表 -->
       <a-table
@@ -215,19 +215,19 @@ onActivated(() => {
           row-key="host_id"
           @change="handleTableChange">
         <template #title>
-          <span>HOST列表</span>
+          <span>HOST List</span>
           <a-space>
-            <a-button type="primary" @click="batchUpgrades">批量审批版本号升级</a-button>
-            <a-button type="primary" @click="handleEmail">维护通知邮箱</a-button>
+            <a-button type="primary" @click="batchUpgrades">Batch Approve Version Upgrade</a-button>
+            <a-button type="primary" @click="handleEmail">Maintain Notification Email</a-button>
           </a-space>
         </template>
         <template #bodyCell="{ column, record }">
           <template v-if="column.key === 'action'">
             <a-space size="small">
-              <a-button size="small" type="link" @click="handleView(record)">查看</a-button>
-              <a-button size="small" type="link" @click="activeHost(record)">同意启用</a-button>
-              <a-popconfirm title="确认删除HOST？" ok-text="确认" cancel-text="取消" @confirm="confirmDelete(record)">
-                <a-button size="small" type="link" class="delete-btn">删除</a-button>
+              <a-button size="small" type="link" @click="handleView(record)">View</a-button>
+              <a-button size="small" type="link" @click="activeHost(record)">Approve Enable</a-button>
+              <a-popconfirm title="Confirm delete HOST?" ok-text="OK" cancel-text="Cancel" @confirm="confirmDelete(record)">
+                <a-button size="small" type="link" class="delete-btn">Delete</a-button>
               </a-popconfirm>
             </a-space>
           </template>

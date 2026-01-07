@@ -90,26 +90,26 @@ const getList = (page = 1, size = 10, mac = '', username = '', mg_id = '', state
 
 const stopHost = (record) => {
   Modal.confirm({
-    title: createVNode('div', {style: 'color:red;font-size:16px;'}, '确认停用这条HOST？'),
+    title: createVNode('div', {style: 'color:red;font-size:16px;'}, 'Confirm disabling this HOST?'),
     icon: createVNode(ExclamationCircleOutlined),
     onOk() {
       confirmDeactivateHost(record)
     },
-    okText: '确认',
-    cancelText: '取消',
+    okText: 'OK',
+    cancelText: 'Cancel',
     class: 'logout-modal',
   })
 }
 
 const offlineHost = (record) => {
   Modal.confirm({
-    title: createVNode('div', {style: 'color:red;font-size:16px;'}, 'host未占用状态才可以下线'),
+    title: createVNode('div', {style: 'color:red;font-size:16px;'}, 'HOST can only go offline when not occupied'),
     icon: createVNode(ExclamationCircleOutlined),
     onOk() {
       confirmOfflineHost(record)
     },
-    okText: '确认',
-    cancelText: '取消',
+    okText: 'OK',
+    cancelText: 'Cancel',
     class: 'logout-modal',
   })
 }
@@ -149,7 +149,7 @@ onActivated(() => {
 <template>
   <div >
     <a-space direction="vertical" style="width: 100%; gap: 16px">
-      <Header title="可用HOST管理" subTitle="HOST测试机管理"/>
+      <Header title="Available HOST Management" subTitle="HOST test machine management"/>
       <Search @reset="onSearchReset" @submit="onSearchSubmit"/>
       <!-- 数据列表 -->
       <a-table
@@ -160,21 +160,21 @@ onActivated(() => {
           row-key="host_id"
           @change="handleTableChange">
         <template #title>
-          <span>HOST列表</span>
+          <span>HOST List</span>
         </template>
         <template #bodyCell="{ column, record }">
           <template v-if="column.key === 'action'">
             <a-space size="small">
-              <a-button size="small" type="link" @click="handleView(record)">查看</a-button>
-              <a-button size="small" type="link" @click="stopHost(record)">停用</a-button>
-              <a-button size="small" type="link" @click="offlineHost(record)">下线</a-button>
+              <a-button size="small" type="link" @click="handleView(record)">View</a-button>
+              <a-button size="small" type="link" @click="stopHost(record)">Disable</a-button>
+              <a-button size="small" type="link" @click="offlineHost(record)">Go Offline</a-button>
               <a-popconfirm
-                  title="确认删除HOST？"
-                  ok-text="确认"
-                  cancel-text="取消"
+                  title="Confirm delete HOST?"
+                  ok-text="OK"
+                  cancel-text="Cancel"
                   @confirm="confirmDelete(record)"
               >
-                <a-button size="small" type="link" class="delete-btn">删除</a-button>
+                <a-button size="small" type="link" class="delete-btn">Delete</a-button>
               </a-popconfirm>
             </a-space>
           </template>

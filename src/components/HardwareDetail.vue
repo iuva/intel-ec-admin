@@ -30,7 +30,7 @@ watch(() => props.info, (newVal, oldVal) => {
         <pre>{{ item.hw_info || item.hw_info.length > 0 ? JSON.stringify(item.hw_info, null, 2) : '--' }}</pre>
       </a-col>
     </a-row>
-    <div v-else>暂无硬件信息</div>
+    <div v-else>No hardware information</div>
   </div>
 </template>
 

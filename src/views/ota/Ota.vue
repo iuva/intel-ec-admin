@@ -1,6 +1,6 @@
 <template>
   <Space direction="vertical" style="width: 100%; gap: 16px;">
-    <Header title="OTA管理" subTitle="软件升级及版本管理"/>
+    <Header title="OTA Management" subTitle="Software upgrade and version management"/>
     <div class="list-container">
 
       <Space direction="vertical" style="width: 100%; gap: 16px;">
@@ -27,7 +27,7 @@ const appStore = useAppStore()
 const list = ref([])
 const activeKey = ref([])
 
-// 获取列表数据
+// Get list data
 const fetchList = () => {
   appStore.setLoading(true)
   fetchOTAList().then((res) => {

@@ -1,13 +1,13 @@
 export const HostStatusMap = new Map([
-  [0, '空闲'],
-  [1, '已锁定'],
-  [2, '已占用'],
-  [3, 'case执行中'],
-  [4, '离线'],
-  [5, '待激活'],
-  [6, '硬件改动'],
-  [7, '手动停用'],
-  [8, '更新中']
+  [0, 'Idle'],
+  [1, 'Locked'],
+  [2, 'Occupied'],
+  [3, 'Case Executing'],
+  [4, 'Offline'],
+  [5, 'Pending Activation'],
+  [6, 'Hardware Modification'],
+  [7, 'Manually Disabled'],
+  [8, 'Updating']
 ]);
 export const columns = [
   {
@@ -29,19 +29,19 @@ export const columns = [
     align: 'center'
   },
   {
-    title: '状态',
+    title: 'Status',
     dataIndex: 'host_state',
     customRender: ({ text, record, index }) => HostStatusMap.get(text) || '--',
     align: 'center'
   },
   {
-    title: '申报时间',
+    title: 'Submission Time',
     dataIndex: 'subm_time',
     customRender: ({ text, record, index }) => new Date(text).toLocaleString() || '--',
     align: 'center'
   },
   {
-    title: '操作',
+    title: 'Action',
     key: 'action',
     width: 80,
     align: 'center'

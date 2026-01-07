@@ -1,27 +1,27 @@
 <template>
   <div class="dashboard">
-    <h1>欢迎来到后台管理系统</h1>
-    <p class="subtitle">这是一个基于Vue3 + Vite + Ant Design Vue开发的管理系统</p>
-    
+    <h1>Welcome to Admin Management System</h1>
+    <p class="subtitle">This is a management system developed based on Vue3 + Vite + Ant Design Vue</p>
+
     <div class="stats-container">
       <a-card class="stat-card">
         <p class="stat-number">1,234</p>
-        <p class="stat-label">总用户数</p>
+        <p class="stat-label">Total Users</p>
       </a-card>
       <a-card class="stat-card">
         <p class="stat-number">567</p>
-        <p class="stat-label">今日新增</p>
+        <p class="stat-label">New Today</p>
       </a-card>
       <a-card class="stat-card">
         <p class="stat-number">89%</p>
-        <p class="stat-label">活跃度</p>
+        <p class="stat-label">Activity</p>
       </a-card>
     </div>
-    
+
     <div class="action-tips">
       <a-alert
-        message="操作提示"
-        description="您可以通过左侧菜单栏访问系统的各项功能"
+        message="Operation Tips"
+        description="You can access various system functions through the left menu bar"
         type="info"
         show-icon
       />

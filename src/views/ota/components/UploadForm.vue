@@ -4,12 +4,12 @@
     <a-form :model="uploadModel" ref="uploadForm" class="version-form">
       <a-row>
         <a-col span="4">
-          <a-form-item label="版本号" name="conf_ver" :rules="[{ required: true, message: '请输入版本号' }]">
-            <a-input class="version-input" placeholder="请输入" v-model:value="uploadModel.conf_ver"/>
+          <a-form-item label="Version" name="conf_ver" :rules="[{ required: true, message: 'Please enter version' }]">
+            <a-input class="version-input" placeholder="Please enter" v-model:value="uploadModel.conf_ver"/>
           </a-form-item>
         </a-col>
-        <a-col span="7" offset="1">
-          <a-form-item name="conf_url" label="安装包" :rules="[{ required: true, message: '请上传安装包' }]">
+        <a-col span="8" offset="1">
+          <a-form-item name="conf_url" label="Installation Package" :rules="[{ required: true, message: 'Please upload installation package' }]">
             <a-upload
                 :showUploadList="false"
                 :max-count="1"
@@ -18,20 +18,20 @@
                 list-type="text"
                 :customRequest="customRequest" @change="handleChange">
               <a-button :loading="uploadStatus == 'uploading'" :danger="uploadStatus == 'error'">
-                {{ fileUrl.length == 0 ? '点击上传' : fileUrl }}
+                {{ fileUrl.length == 0 ? 'Click to upload' : fileUrl }}
               </a-button>
             </a-upload>
           </a-form-item>
         </a-col>
-        <a-col span="7" offset="1">
+        <a-col span="6" offset="1">
           <a-form-item name="conf_md5" label="MD5"
-                       :rules="[{ required: false, message: '请输入MD5' },{ min: 32, max: 32, message: '请输入正确MD5' }]">
-            <a-input class="version-input" placeholder="请输入" v-model:value="uploadModel.conf_md5"/>
+                       :rules="[{ required: false, message: 'Please enter MD5' },{ min: 32, max: 32, message: 'Please enter correct MD5' }]">
+            <a-input class="version-input" placeholder="Please enter" v-model:value="uploadModel.conf_md5"/>
           </a-form-item>
         </a-col>
         <a-col span="2" offset="1">
           <a-button html-type="submit" type="primary" @click="handleSubmit">
-            下发
+            Deploy
           </a-button>
         </a-col>
       </a-row>
@@ -71,12 +71,12 @@ const uploadModel = reactive<FormState>({
 })
 const handleSubmit = () => {
   uploadForm.value.validate().then((valid) => {
-    console.log('表单数据:', valid)
+    console.log('Form data:', valid)
 
     if (props.otaData.conf_ver === valid.conf_ver) {
-      message.error('版本已存在，请勿重复创建')
+      message.error('Version already exists, please do not create duplicates')
     } else {
-      console.log('表单校验成功:', valid)
+      console.log('Form validation successful:', valid)
       valid.conf_url = valid.conf_url[0].name
       valid.id = uploadModel.id
       valid.conf_name = uploadModel.conf_name
@@ -86,7 +86,7 @@ const handleSubmit = () => {
       emit('submit', valid)
     }
   }).catch((error) => {
-    console.log('表单校验出错:', error)
+    console.log('Form validation error:', error)
   })
 }
 
@@ -112,7 +112,7 @@ const customRequest = (options) => {
   uploadFile({file}).then((res) => {
     console.log('upload response:', res)
     uploadStatus.value = 'done'
-    message.success('上传成功')
+    message.success('Upload successful')
     onSuccess(res)
   }).catch((error) => {
     console.log('upload error:', error)

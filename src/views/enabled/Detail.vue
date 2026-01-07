@@ -94,13 +94,13 @@ const getData = (id) => {
 
 const stopHost = () => {
   Modal.confirm({
-    title: createVNode('div', {style: 'color:red;font-size:16px;'}, '确认停用这条HOST？'),
+    title: createVNode('div', {style: 'color:red;font-size:16px;'}, 'Confirm disabling this HOST?'),
     icon: createVNode(ExclamationCircleOutlined),
     onOk() {
       confirmDeactivateHost()
     },
-    okText: '确认',
-    cancelText: '取消',
+    okText: 'OK',
+    cancelText: 'Cancel',
     class: 'logout-modal',
   })
 }
@@ -108,13 +108,13 @@ const stopHost = () => {
 
 const offlineHost = () => {
   Modal.confirm({
-    title: createVNode('div', {style: 'color:red;font-size:16px;'}, 'host未占用状态才可以下线'),
+    title: createVNode('div', {style: 'color:red;font-size:16px;'}, 'HOST can only go offline when not occupied'),
     icon: createVNode(ExclamationCircleOutlined),
     onOk() {
       confirmOfflineHost()
     },
-    okText: '确认',
-    cancelText: '取消',
+    okText: 'OK',
+    cancelText: 'Cancel',
     class: 'logout-modal',
   })
 }
@@ -161,18 +161,18 @@ watch(detail, (newVal) => {
 <template>
   <div style="position: relative;height: 100%">
     <a-space direction="vertical" style="width: 100%;gap: 16px;">
-      <Header :title="`HOST ID: ${hostId}`" subTitle="case执行中">
+      <Header :title="`HOST ID: ${hostId}`" subTitle="case executing">
         <template #action>
           <a-space :size="30">
-            <a-button type="primary" @click="stopHost">停用host</a-button>
-            <a-button type="primary" @click="offlineHost">下线</a-button>
+            <a-button type="primary" @click="stopHost">Disable host</a-button>
+            <a-button type="primary" @click="offlineHost">Go offline</a-button>
           </a-space>
         </template>
       </Header>
       <div class="detail-container">
         <a-space direction="vertical" style="width: 100%; gap: 24px;">
           <a-collapse expandIconPosition="end" v-model:activeKey="activeKey">
-            <a-collapse-panel key="1" header="识别信息">
+            <a-collapse-panel key="1" header="Identification Information">
               <a-row>
                 <a-col span="8"><span class="detail-text">MachineGuid:  {{ detail?.mg_id ? detail.mg_id : '--' }}</span></a-col>
                 <a-col span="8"><span class="detail-text">mac:  {{ detail?.mac ? detail.mac : '--' }}</span></a-col>
@@ -189,13 +189,13 @@ watch(detail, (newVal) => {
           <a-collapse expandIconPosition="end" v-model:activeKey="activeKey">
 
 
-            <a-collapse-panel key="2" header="硬件信息">
+            <a-collapse-panel key="2" header="Hardware Information">
               <HardwareDetail :info="detail?.hw_list"/>
             </a-collapse-panel>
           </a-collapse>
           <a-collapse expandIconPosition="end" v-model:activeKey="activeKey">
 
-            <a-collapse-panel key="3" header="执行日志">
+            <a-collapse-panel key="3" header="Execution Logs">
               <a-table
                   size="small"
                   class="log-table"
@@ -212,7 +212,7 @@ watch(detail, (newVal) => {
       </div>
     </a-space>
     <div class="footer">
-      <a-button @click="$router.back()">取消</a-button>
+      <a-button @click="$router.back()">Cancel</a-button>
     </div>
   </div>
   <PasswordModal
