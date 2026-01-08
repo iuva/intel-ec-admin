@@ -1,3 +1,5 @@
+// Host status mapping - maps host state codes to human-readable status strings
+// Used for displaying host status in tables and UI components
 export const HostStatusMap = new Map([
   [0, 'Idle'],
   [1, 'Locked'],
@@ -9,6 +11,10 @@ export const HostStatusMap = new Map([
   [7, 'Manually Disabled'],
   [8, 'Updating']
 ]);
+
+// Table columns definition for pending hosts table
+// Contains configuration for displaying pending host information in a table
+// Each column specifies how to display data from the host records
 export const columns = [
   {
     title: 'hostID',

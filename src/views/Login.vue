@@ -70,8 +70,8 @@ export default {
         await formRef.value.validate()
         loading.value = true
 
-        // 由于是模拟环境，我们直接模拟登录成功
-        // 实际项目中应该调用真实的登录接口
+        // Since it's a simulation environment, we directly simulate a successful login
+        // In actual projects, real login interface should be called
         const {data, message} = await login(formState)
         console.log('Login successful:', data, message)
 
@@ -85,7 +85,7 @@ export default {
         router.push('/')
       } catch (error) {
         console.error('Login failed:', error)
-        // message.error('登录失败，请检查账号密码')
+        // message.error('Login failed, please check account and password')
       } finally {
         loading.value = false
       }
@@ -147,7 +147,7 @@ export default {
   transition: all 0.3s ease;
 }
 
-/* 深色主题下的登录表单样式 */
+/* Login form styles under dark theme */
 body.dark-theme .login-form-wrapper {
   background: var(--componentBackgroundColor);
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);

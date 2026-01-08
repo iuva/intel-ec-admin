@@ -1,6 +1,8 @@
 import request from '../utils/request'
 
-// 登录接口
+// Admin login interface - authenticates admin users and returns access tokens
+// Request body: { username: string, password: string }
+// Response: { token: string, refresh_token: string, message: string }
 export const login = (data) => {
   return request({
     url: '/api/v1/auth/admin/login',
@@ -9,7 +11,10 @@ export const login = (data) => {
   })
 }
 
-// 刷新token接口
+// Refresh token interface - exchanges a refresh token for a new access token
+// Request body: { refresh_token: string }
+// Headers: Authorization: 'Bearer ' + current_access_token
+// Response: { token: string, refresh_token: string }
 export const refreshToken = (refreshToken,token) => {
   return request({
     url: '/api/v1/auth/refresh',
@@ -21,19 +26,26 @@ export const refreshToken = (refreshToken,token) => {
   })
 }
 
-// 获取测试列表数据
-export const getTestList = (params) => {
+// Get available hosts list - queries available hosts with pagination
+// Query parameters: page, page_size, mac, username, host_state, mg_id, use_by
+// Response: { data: { hosts: [...], total: number }, message: string }
+export const getAvailableHostsList = (params) => {
   return request({
-    url: '/test/list',
+    url: '/api/v1/host/admin/host/list',
     method: 'get',
     params
   })
 }
 
-// 获取测试详情
-export const getTestDetail = (id) => {
+// Get host detail - retrieves detailed information for a specific host
+// Query parameter: host_id
+// Response: { data: { host_info }, message: string }
+export const getHostDetail = (hostId) => {
   return request({
-    url: `/test/detail/${id}`,
-    method: 'get'
+    url: `/api/v1/host/admin/host/detail`,
+    method: 'get',
+    params: {
+      host_id: hostId
+    }
   })
 }

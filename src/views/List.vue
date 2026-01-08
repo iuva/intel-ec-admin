@@ -1,7 +1,7 @@
 <template>
   <div class="list-container">
     <a-card title="Test Data List" class="list-card">
-      <!-- 搜索和筛选区域 -->
+      <!-- Search and filter area -->
       <div class="search-bar">
         <a-input
           v-model:value="searchKeyword"
@@ -13,7 +13,7 @@
         <a-button type="primary" @click="handleSearch">Search</a-button>
       </div>
 
-      <!-- 数据列表 -->
+      <!-- Data list -->
       <a-table
         :columns="columns"
         :data-source="listData"
@@ -34,7 +34,7 @@
 <script>
 import { ref, reactive, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
-import { getTestList } from '../api/index'
+import { getAvailableHostsList } from '../api/index'
 
 export default {
   name: 'List',
@@ -82,26 +82,16 @@ export default {
     const fetchList = async () => {
       loading.value = true
       try {
-        // 模拟数据，实际项目中调用真实接口
-        // const res = await getTestList({
-        //   page: pagination.current,
-        //   pageSize: pagination.pageSize,
-        //   keyword: searchKeyword.value
-        // })
+        // Call real interface in actual project
+        const res = await getAvailableHostsList({
+          page: pagination.current,
+          page_size: pagination.pageSize,
+          keyword: searchKeyword.value
+        })
 
-        // Mock data
-        const mockData = {
-          list: Array.from({ length: pagination.pageSize }, (_, index) => ({
-            id: (pagination.current - 1) * pagination.pageSize + index + 1,
-            name: `Test Project${(pagination.current - 1) * pagination.pageSize + index + 1}`,
-            description: `This is the description for test project${(pagination.current - 1) * pagination.pageSize + index + 1}`,
-            createTime: new Date().toLocaleString()
-          })),
-          total: 100
-        }
-
-        listData.value = mockData.list
-        pagination.total = mockData.total
+        // Use real data from API response
+        listData.value = res.data.hosts
+        pagination.total = res.data.total
       } catch (error) {
         console.error('Failed to get list:', error)
       } finally {

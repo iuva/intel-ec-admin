@@ -1,7 +1,10 @@
 <script setup lang="ts">
+// 404 Error Page component - displays when a requested page is not found
+// Provides a user-friendly error message and option to return home
 
 import {Empty} from 'ant-design-vue'
 
+// Use simple empty image for 404 page
 const simpleImage = Empty.PRESENTED_IMAGE_SIMPLE
 </script>
 

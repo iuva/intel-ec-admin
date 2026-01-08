@@ -24,19 +24,19 @@ const listData = ref([])
 const searchParams = ref({})
 
 const onSearchReset = () => {
-  console.log('搜索重置')
+  console.log('Search reset')
 
   getList(1, pagination.pageSize)
 }
 const onSearchSubmit = (values) => {
-  console.log('搜索提交，参数：', values)
+  console.log('Search submitted, parameters:', values)
   searchParams.value = values
   getList(1, pagination.pageSize, values.mac, values.username, values.mg_id, values.status, values.use_by)
 }
 
 
 const handleTableChange = (page, filters, sorter) => {
-  console.log('表格参数变化:', page, filters, sorter)
+  console.log('Table parameter changes:', page, filters, sorter)
   if (page) {
     pagination.current = page.current
     pagination.pageSize = page.pageSize
@@ -46,12 +46,12 @@ const handleTableChange = (page, filters, sorter) => {
 }
 
 const handleView = (record) => {
-  console.log('查看详情:', record)
+  console.log('View details:', record)
   router.push({path: '/enabled/detail', name: 'EnabledDetail', params: {id: record.host_id}})
 }
 
 const confirmDelete = (record) => {
-  console.log('删除:', record)
+  console.log('Delete:', record)
   appStore.setLoading(true)
   deleteEnabledHost(record.host_id).then(res => {
     console.log('res', res)
@@ -64,7 +64,7 @@ const confirmDelete = (record) => {
 
 const getList = (page = 1, size = 10, mac = '', username = '', mg_id = '', state = null, use_by = '') => {
   appStore.setLoading(true)
-  console.log('获取列表数据')
+  console.log('Get list data')
   fetchEnabledList({
     page: page,
     page_size: size,
@@ -151,7 +151,7 @@ onActivated(() => {
     <a-space direction="vertical" style="width: 100%; gap: 16px">
       <Header title="Available HOST Management" subTitle="HOST test machine management"/>
       <Search @reset="onSearchReset" @submit="onSearchSubmit"/>
-      <!-- 数据列表 -->
+      <!-- Data list -->
       <a-table
           class="host-table"
           :columns="columns"

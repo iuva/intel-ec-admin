@@ -30,6 +30,8 @@
 </template>
 
 <script>
+// Dashboard component - displays system overview and statistics
+// Shows key metrics and provides quick access to system functions
 export default {
   name: 'Dashboard'
 }

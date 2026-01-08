@@ -1,17 +1,24 @@
 <template>
+  <!-- Header component - displays page title and subtitle with optional action slot -->
   <div class="header-container">
 
     <div class="title-container">
+      <!-- Main title of the page -->
       <div class="title">{{ title }}</div>
+      <!-- Subtitle providing additional context -->
       <div class="sub-title">{{ subTitle }}</div>
     </div>
+    <!-- Optional action slot for buttons or other elements -->
     <div>
       <slot name="action"/>
     </div>
   </div>
 </template>
 <script setup lang="ts">
-
+// Header component - displays page title and subtitle with optional action slot
+// Props:
+//   title (string) - main title text
+//   subTitle (string) - subtitle text providing additional context
 defineProps({
   title: {
     type: String,

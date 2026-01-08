@@ -1,26 +1,36 @@
 <template>
+  <!-- JSON Viewer component - displays JSON data with syntax highlighting -->
   <div class="json-viewer">
+    <!-- Display formatted JSON with HTML content -->
     <pre v-html="formatedJson"></pre>
   </div>
 </template>
 
 <script setup>
+// JSON Viewer component - displays JSON data with syntax highlighting
 import {computed, watch} from 'vue'
 
+// Props:
+//   json (String) - JSON string to be formatted and displayed
 const props = defineProps({
   json: String
 })
 
+// Format JSON string with syntax highlighting
+// Parameter: json - JSON string or object to format
+// Returns: HTML string with syntax highlighting
 function format(json) {
   if (typeof json !== 'string') {
     json = JSON.stringify(json, null, 2)
   }
 
+  // Escape HTML characters to prevent XSS
   json = json
       .replace(/&/g, '&amp;')
       .replace(/</g, '&lt;')
       .replace(/>/g, '&gt;')
 
+  // Apply syntax highlighting to different JSON elements
   return json.replace(
       /("(\\u[a-fA-F0-9]{4}|\\[^u]|[^\\"])*"(?:\s*:)?|\b(true|false|null)\b|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?)/g,
       (match) => {
@@ -37,6 +47,7 @@ function format(json) {
   )
 }
 
+// Computed property that formats the JSON for display
 const formatedJson = computed(() => format(props.json))
 
 </script>
@@ -52,7 +63,7 @@ pre {
   line-height: 1.5;
 }
 
-/* JSON 颜色主题 */
+/* JSON Color Theme */
 .key {
   color: #ff79c6;
 }

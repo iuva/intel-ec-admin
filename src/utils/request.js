@@ -4,24 +4,24 @@ import { refreshToken } from '@/api/index'
 import { message } from 'ant-design-vue'
 import router from '../router'
 
-// 创建axios实例
+// Create axios instance
 const service = axios.create({
-	baseURL: '/api', // 使用环境变量中的API地址
-	timeout: 10000, // 请求超时时间
+	baseURL: '/api', // Use API address from environment variable
+	timeout: 10000, // Request timeout
 })
 
-// 是否正在刷新token的标志
+// Flag indicating if token is being refreshed
 let isRefreshing = false
-// 存储请求队列
+// Store request queue
 let requests = []
 
-// 请求拦截器
+// Request interceptor
 service.interceptors.request.use(
 	(config) => {
-		// 从localStorage中获取token
+		// Get token from localStorage
 		const token = getToken()
 		if (token) {
-			// 在请求头中添加bearer token
+			// Add bearer token to request header
 			config.headers['Authorization'] = `Bearer ${token}`
 		}
 		return config
@@ -31,19 +31,19 @@ service.interceptors.request.use(
 	}
 )
 
-// 响应拦截器
+// Response interceptor
 service.interceptors.response.use(
 	(response) => {
-		// 直接返回响应数据
+		// Directly return response data
 		return response.data
 	},
 	async (error) => {
 		const { config, response } = error
-		console.log('响应错误:', error)
+		console.log('Response error:', error)
 
-		// 如果是401错误，说明token过期
+		// If it's a 401 error, the token has expired
 		if (response && response.status === 401) {
-			// 如果配置不存在或已经重试过，直接跳转到登录页
+			// If config doesn't exist or has already been retried, directly redirect to login page
 			if (
 				!config ||
 				config._retry ||
@@ -57,7 +57,7 @@ service.interceptors.response.use(
 
 			config._retry = true
 
-			// 如果正在刷新token，则将请求加入队列
+			// If token is being refreshed, add request to queue
 			if (isRefreshing) {
 				return new Promise((resolve) => {
 					requests.push((token) => {
@@ -70,7 +70,7 @@ service.interceptors.response.use(
 			isRefreshing = true
 
 			try {
-				// 调用刷新token的接口
+				// Call refresh token interface
 				const current_refresh_token = getRefreshToken()
         const current_token = getToken()
 				console.log('Refreshing token with refresh token:', current_refresh_token,current_token)
@@ -78,20 +78,20 @@ service.interceptors.response.use(
 
 				const { token, refresh_token } = res.data
         console.log('Refreshed token:', token,refresh_token)
-				// 保存新的token
+				// Save new token
 				setToken(token)
 				setRefreshToken(refresh_token)
 
-				// 更新请求头
+				// Update request header
 				config.headers['Authorization'] = `Bearer ${token}`
 
-				// 处理队列中的请求
+				// Process requests in queue
 				requests.forEach((cb) => cb(token))
 				requests = []
 
 				return service(config)
 			} catch (refreshError) {
-				// 刷新失败，清除token并跳转到登录页
+				// Refresh failed, clear token and redirect to login page
 				removeToken()
 				router.push('/login')
 				return Promise.reject(refreshError)

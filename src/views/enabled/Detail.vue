@@ -42,7 +42,7 @@ const getLogs = (id, page, size = 10) => {
 }
 
 const handleTableChange = (page, filters, sorter) => {
-  console.log('表格参数变化:', page, filters, sorter)
+  console.log('Table parameter changes:', page, filters, sorter)
   if (page) {
     pagination.current = page.current
     pagination.pageSize = page.pageSize

@@ -4,8 +4,8 @@ import path from 'path'
 
 export default defineConfig(({ mode }) => {
 	const env = loadEnv(mode, process.cwd())
-	console.log('环境变量', import.meta)
-	console.log('环境变量', process.env.VITE_API_BASE_URL)
+	console.log('Environment variables', import.meta)
+	console.log('Environment variables', process.env.VITE_API_BASE_URL)
 	return {
 		plugins: [vue()],
 		resolve: {

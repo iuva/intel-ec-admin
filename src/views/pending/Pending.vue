@@ -206,7 +206,7 @@ onActivated(() => {
     <a-space direction="vertical" style="width: 100%; gap: 16px;">
       <Header title="Pending HOST" subTitle="After approval, it can enter the available HOST list (plugin visible)"/>
       <Search @reset="onSearchReset" @submit="onSearchSubmit"/>
-      <!-- 数据列表 -->
+      <!-- Data list -->
       <a-table
           class="host-table"
           :columns="columns"

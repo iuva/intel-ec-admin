@@ -1,3 +1,4 @@
+// Host status mapping - maps host state codes to human-readable status strings
 export const HostStatusMap = new Map([
   [0, 'Idle'],
   [1, 'Locked'],
@@ -10,12 +11,16 @@ export const HostStatusMap = new Map([
   [8, 'Updating']
 ]);
 
+// Log status mapping - maps log state codes to human-readable status strings
 const LogStatusMap = {
   0: 'Idle',
   1: 'Start',
   2: 'Success',
   3: 'Failed'
 };
+
+// Table columns definition for enabled hosts table
+// Contains configuration for displaying host information in a table
 export const columns = [
   {
     title: 'hostID',
@@ -61,6 +66,9 @@ export const columns = [
     align: 'center'
   }
 ]
+
+// Table columns definition for log entries table
+// Contains configuration for displaying execution log information in a table
 export const log_columns = [
   {
     title: 'Date',

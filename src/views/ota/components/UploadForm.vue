@@ -1,13 +1,16 @@
 <template>
+  <!-- OTA Upload Form component - handles firmware version upload and deployment -->
   <div class="version-uploader-container">
-
+    <!-- Form for OTA configuration -->
     <a-form :model="uploadModel" ref="uploadForm" class="version-form">
       <a-row>
+        <!-- Version input field -->
         <a-col span="4">
           <a-form-item label="Version" name="conf_ver" :rules="[{ required: true, message: 'Please enter version' }]">
             <a-input class="version-input" placeholder="Please enter" v-model:value="uploadModel.conf_ver"/>
           </a-form-item>
         </a-col>
+        <!-- Installation package upload field -->
         <a-col span="8" offset="1">
           <a-form-item name="conf_url" label="Installation Package" :rules="[{ required: true, message: 'Please upload installation package' }]">
             <a-upload
@@ -23,12 +26,14 @@
             </a-upload>
           </a-form-item>
         </a-col>
+        <!-- MD5 checksum field -->
         <a-col span="6" offset="1">
           <a-form-item name="conf_md5" label="MD5"
                        :rules="[{ required: false, message: 'Please enter MD5' },{ min: 32, max: 32, message: 'Please enter correct MD5' }]">
             <a-input class="version-input" placeholder="Please enter" v-model:value="uploadModel.conf_md5"/>
           </a-form-item>
         </a-col>
+        <!-- Deploy button -->
         <a-col span="2" offset="1">
           <a-button html-type="submit" type="primary" @click="handleSubmit">
             Deploy
@@ -41,27 +46,34 @@
 
 
 <script setup lang="ts">
+// OTA Upload Form component - handles firmware version upload and deployment
+// Allows users to upload firmware files and configure OTA updates
 
+// Interface defining the structure of OTA configuration data
 interface FormState {
-  conf_ver: string;
-  id: string;
-  conf_name: string;
-  conf_url: Array<string>;
-  conf_md5: string | null | undefined;
+  conf_ver: string;      // Configuration version
+  id: string;            // Configuration ID
+  conf_name: string;     // Configuration name
+  conf_url: Array<string>; // Configuration URL
+  conf_md5: string | null | undefined; // MD5 checksum for verification
 }
 
+// Props received from parent component
 const props = defineProps<{
   otaData: FormState
 }>()
+// Events emitted to parent component
 const emit = defineEmits(['submit'])
 import {ref, reactive, watch} from 'vue'
 import {message} from 'ant-design-vue'
 import {uploadFile, fetchFileUrl} from '@/api/upload'
 
+// References for form and upload status
 const uploadForm = ref()
-const uploadStatus = ref('')
-const fileUrl = ref('')
+const uploadStatus = ref('')  // Current status of the upload (uploading, done, error)
+const fileUrl = ref('')       // URL of the uploaded file
 
+// Reactive model for the upload form
 const uploadModel = reactive<FormState>({
   conf_ver: '',
   conf_url: [],
@@ -69,6 +81,9 @@ const uploadModel = reactive<FormState>({
   conf_name: '',
   conf_md5: '',
 })
+
+// Handle form submission after validation
+// Validates form fields and emits submit event with form data
 const handleSubmit = () => {
   uploadForm.value.validate().then((valid) => {
     console.log('Form data:', valid)
@@ -90,6 +105,9 @@ const handleSubmit = () => {
   })
 }
 
+// Handle file upload changes
+// Updates the form model when files are added, removed, or uploaded
+// Parameter: {file} - the file object with status information
 const handleChange = ({file}) => {
   console.log('file change file:', file)
   if (file.status == 'removed') {
@@ -104,6 +122,10 @@ const handleChange = ({file}) => {
   }
 
 }
+
+// Custom upload request handler
+// Handles the file upload process with custom logic
+// Parameter: options - upload configuration including file, callbacks
 const customRequest = (options) => {
   uploadStatus.value = 'uploading'
   const {file, onSuccess, onError} = options
@@ -121,6 +143,10 @@ const customRequest = (options) => {
     onError(error)
   })
 }
+
+// Watch for changes in the otaData prop and update the form model
+// This ensures the form reflects the current OTA configuration data
+// Parameter: data - new OTA configuration data
 watch(() => props.otaData, (data) => {
   console.log('data change:', data)
   if (data) {

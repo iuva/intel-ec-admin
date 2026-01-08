@@ -1,6 +1,6 @@
-/* 全局CSS变量定义 */
+/* Global CSS Variable Definitions */
 :root {
-    /* 默认浅色主题变量 */
+    /* Default light theme variables */
     --primaryColor: #1890ff;
     --successColor: #52c41a;
     --warningColor: #faad14;
@@ -26,7 +26,7 @@
     --componentMargin:14px;
 }
 
-/* 深色主题CSS变量覆盖 */
+/* Dark Theme CSS Variable Overrides */
 .dark-theme {
     --backgroundColor: #141414;
     --componentBackgroundColor: #1f1f1f;
@@ -41,7 +41,7 @@
     --errorColor: #ff4d4f;
 }
 
-/* 全局样式重置 */
+/* Global Style Reset */
 * {
     margin: 0;
     padding: 0;
@@ -58,7 +58,7 @@ html, body {
     transition: background-color 0.3s ease, color 0.3s ease;
 }
 
-/* 滚动条样式 */
+/* Scrollbar Styles */
 ::-webkit-scrollbar {
     width: 8px;
     height: 8px;
@@ -77,14 +77,14 @@ html, body {
     background: var(--textSecondaryColor);
 }
 
-/* 确保布局组件占满高度 */
+/* Ensure layout components fill height */
 .ant-layout {
     min-height: 100vh;
     background-color: var(--backgroundColor);
     transition: background-color 0.3s ease;
 }
 
-/* 修复Ant Design的一些默认样式 */
+/* Fix some default styles of Ant Design */
 .ant-menu-inline .ant-menu-item::after {
     border-right: 0px solid var(--primaryColor);
 }
@@ -103,7 +103,7 @@ html, body {
     border-color: #40a9ff;
 }
 
-/* 通用主题响应式样式 */
+/* Universal theme responsive styles */
 .ant-card,
 .ant-table,
 .ant-form,
@@ -158,13 +158,13 @@ html, body {
     background-color: var(--activeColor);
 }
 
-/* 确保ID选择器不与其他样式冲突 */
+/* Ensure ID selectors don't conflict with other styles */
 #app {
     height: 100vh;
     overflow: hidden;
 }
 
-/* 平滑过渡动画 */
+/* Smooth transition animations */
 * {
     transition-property: background-color, border-color, color, fill, stroke, opacity, box-shadow, transform;
     transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);

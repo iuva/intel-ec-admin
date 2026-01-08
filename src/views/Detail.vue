@@ -36,7 +36,7 @@
 <script>
 import { ref, onMounted } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
-import { getTestDetail } from '../api/index'
+import { getHostDetail } from '../api/index'
 
 export default {
   name: 'Detail',
@@ -46,35 +46,25 @@ export default {
     const loading = ref(false)
     const detailData = ref(null)
 
-    // 获取详情数据
+    // Get detail data
     const fetchDetail = async () => {
       const id = route.params.id
       if (!id) return
 
       loading.value = true
       try {
-        // 模拟数据，实际项目中调用真实接口
-        // const res = await getTestDetail(id)
-        
-        // 模拟数据
-        const mockDetail = {
-          id: id,
-          name: `Test Project${id}`,
-          description: `This is the detailed description for test project${id}, including various configurations and instructions.`,
-          createTime: new Date().toLocaleString(),
-          status: Math.random() > 0.5 ? 'active' : 'inactive',
-          remark: `This is the notes for test project${id}.`
-        }
+        // Call real interface in actual project
+        const res = await getHostDetail(id)
 
-        detailData.value = mockDetail
+        detailData.value = res.data
       } catch (error) {
-        console.error('获取详情失败:', error)
+        console.error('Failed to get detail:', error)
       } finally {
         loading.value = false
       }
     }
 
-    // 返回列表
+    // Return to list
     const goBack = () => {
       router.push('/list')
     }

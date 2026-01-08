@@ -111,10 +111,10 @@ export default {
 
     const {loading} = storeToRefs(appStore)
 
-    // 计算当前选中的菜单项
+    // Calculate currently selected menu item
     const selectedKey = computed(() => {
       const currentPath = router.currentRoute.value.path
-      // 当访问详情页时，高亮列表菜单项
+      // When accessing detail page, highlight list menu item
       if (currentPath.includes('/detail/')) {
         return currentPath.substring(0, currentPath.lastIndexOf('/detail/'))
 
@@ -122,30 +122,30 @@ export default {
       return currentPath
     })
 
-    // 导航到指定路径
+    // Navigate to specified path
     const navigate = (path) => {
       router.push(path)
       currentKey.value = path
     }
 
-    // 切换主题
+    // Switch theme
     const toggleTheme = (checked) => {
       isDark.value = checked
       saveTheme(checked ? 'dark' : 'light')
       applyTheme()
     }
 
-    // 应用主题样式
+    // Apply theme style
     const applyTheme = () => {
       const theme = getCurrentTheme()
       const root = document.documentElement
 
-      // 设置CSS变量
+      // Set CSS variables
       Object.keys(theme).forEach(key => {
         root.style.setProperty(`--${key}`, theme[key])
       })
 
-      // 添加/移除深色主题类
+      // Add/remove dark theme class
       if (isDark.value) {
         document.body.classList.add('dark-theme')
       } else {
@@ -153,7 +153,7 @@ export default {
       }
     }
 
-    // 退出登录
+    // Log out
     const handleLogout = () => {
 
 
@@ -174,18 +174,18 @@ export default {
       });
     }
 
-    // 监听主题变化，实时应用
+    // Monitor theme changes, apply in real time
     watch(isDark, () => {
       applyTheme()
     })
 
-    // 监听主题变化，实时应用
+    // Monitor theme changes, apply in real time
     watch(loading, () => {
       console.log('loading', loading.value)
     })
 
     onMounted(() => {
-      // 初始化主题
+      // Initialize theme
       isDark.value = isDarkTheme()
       applyTheme()
     })
