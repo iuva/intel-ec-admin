@@ -6,6 +6,7 @@ import request from '../utils/request'
 // Response: { data: { file_url: string }, message: string }
 export const uploadFile = (data) => {
   return request({
+    timeout: 100 * 1000,
     url: '/api/v1/host/file/upload',
     headers: {'Content-Type': 'multipart/form-data'},
     method: 'post',
