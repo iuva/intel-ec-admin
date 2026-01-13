@@ -56,11 +56,7 @@ const activeHost = (record) => {
     title: 'Confirm enabling this HOST?',
     icon: createVNode(ExclamationCircleOutlined),
     onOk() {
-      if (record.diff_state == 1) {
-        confirmActivateHost(record.diff_state, null)
-      } else {
-        confirmActivateHost(record.diff_state, [record.host_id])
-      }
+      confirmActivateHost(record.diff_state, [record.host_id])
     },
     okText: 'OK',
     cancelText: 'Cancel',

@@ -32,11 +32,7 @@ const activeHost = () => {
     icon: createVNode(ExclamationCircleOutlined),
     onOk() {
 
-      if (detail.value.diff_state == 1) {
-        confirmActivateHost(detail.value.diff_state, null)
-      } else {
-        confirmActivateHost(detail.value.diff_state, [hostId.value])
-      }
+      confirmActivateHost(detail.value.diff_state, [hostId.value])
     },
     okText: 'OK',
     cancelText: 'Cancel',
